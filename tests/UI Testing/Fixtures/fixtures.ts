@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 
 import * as Pages from '../Pages/0_PagesIndex';
 
@@ -18,7 +18,21 @@ type MyFixtures = {
     requestLoanPage: Pages.RequestLoanPage;
 };
 
-export const test = base.extend<MyFixtures>({
+export const test = base.extend<MyFixtures, { dbCleaned: void }>({
+
+dbCleaned: [async ({ playwright }, use) => {
+        await test.step('Global Setup: Clean Database via API', async () => {
+            const requestContext = await playwright.request.newContext();
+            const response = await requestContext.post('https://parabank.parasoft.com/parabank/services/bank/cleanDB');
+            
+            expect(response.ok(), 'Database cleanup failed before starting the run').toBeTruthy();
+            
+            await requestContext.dispose();
+        });
+        await use();
+    }, { scope: 'worker', auto: true }],
+
+
     homePage: async ({ page }, use) => { await use(new Pages.HomePage(page)); },
     registerPage: async ({ page }, use) => { await use(new Pages.RegisterPage(page)); },
     forgotLoginInfoPage: async ({ page }, use) => { await use(new Pages.ForgotLoginInfoPage(page)); },
