@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,UpdateProfileData } from '../Data/0_DataIndex';
+import { URLs, UpdateProfileData, updateProfileInfo } from '../Data/0_DataIndex';
 
 export class UpdateProfilePage {
 
@@ -37,8 +37,16 @@ export class UpdateProfilePage {
         });
     }
 
-    async fillUpdateProfileForm(updateProfileData: UpdateProfileData) {
+    async fillUpdateProfileForm(updateProfileData: UpdateProfileData = updateProfileInfo) {
         await test.step('Fill the Update Profile form', async () => {
+            await this.customerFirstName.clear();
+            await this.customerLastName.clear();
+            await this.customerAddressStreet.clear();
+            await this.customerAddressCity.clear();
+            await this.customerAddressState.clear();
+            await this.customerAddressZipCode.clear();
+            await this.customerPhoneNumber.clear();
+
             await this.customerFirstName.fill(updateProfileData.firstName);
             await this.customerLastName.fill(updateProfileData.lastName);
             await this.customerAddressStreet.fill(updateProfileData.address);
@@ -69,5 +77,19 @@ export class UpdateProfilePage {
         await test.step('Assert that successful message is displayed', async () => {
             await expect(this.successfulMessage).toBeVisible();
         });
+    }
+
+    async verifyProfileDataUpdated(updateProfileData: UpdateProfileData = updateProfileInfo) {
+        await test.step('Assert that updated data is still persisted correctly', async () => {
+
+            await expect(this.customerFirstName).toHaveValue(updateProfileData.firstName);
+            await expect(this.customerLastName).toHaveValue(updateProfileData.lastName);
+            await expect(this.customerAddressStreet).toHaveValue(updateProfileData.address);
+            await expect(this.customerAddressCity).toHaveValue(updateProfileData.city);
+            await expect(this.customerAddressState).toHaveValue(updateProfileData.state);
+            await expect(this.customerAddressZipCode).toHaveValue(updateProfileData.zipCode);
+            await expect(this.customerPhoneNumber).toHaveValue(updateProfileData.phoneNumber);
+        });
+
     }
 }

@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,ForgotLoginInfoData } from '../Data/0_DataIndex';
+import { URLs,ForgotLoginInfoData, forgotLoginInfo, validUser } from '../Data/0_DataIndex';
 
 export class ForgotLoginInfoPage {
 
@@ -39,7 +39,7 @@ export class ForgotLoginInfoPage {
         });
     }
 
-    async fillForgotLoginInfoForm(forgotLoginInfoData: ForgotLoginInfoData) {
+    async fillForgotLoginInfoForm(forgotLoginInfoData: ForgotLoginInfoData = forgotLoginInfo) {
         await test.step(`Fill the Forgot Login Info form`, async () => {
             await this.firstName.fill(forgotLoginInfoData.firstName);
             await this.lastName.fill(forgotLoginInfoData.lastName);
@@ -71,7 +71,7 @@ export class ForgotLoginInfoPage {
         });
     }
 
-    async retrievedLoginInfoIsDisplayed(username: string, password: string) {
+    async retrievedLoginInfoIsDisplayed(username: string = validUser.username, password: string = validUser.password) {
         await test.step(`Assert that retrieved login info is displayed`, async () => {
             await expect(this.retrievedUNamePasswordMessage).toBeVisible();
             await expect(this.retrievedInfoParagraph).toBeVisible();

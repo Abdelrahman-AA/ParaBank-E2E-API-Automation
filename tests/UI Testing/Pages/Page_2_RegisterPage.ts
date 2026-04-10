@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,RegistrationData } from '../Data/0_DataIndex';
+import { URLs,RegistrationData, validUser } from '../Data/0_DataIndex';
 
 export class RegisterPage {
 
@@ -47,7 +47,7 @@ export class RegisterPage {
         })
     }
 
-    async fillRegistrationForm(registrationData: RegistrationData) {
+    async fillRegistrationForm(registrationData: RegistrationData =validUser) {
         await test.step('Fill the registration form', async () => {
             await this.firstNameField.fill(registrationData.firstName);
             await this.lastNameField.fill(registrationData.lastName);
@@ -82,7 +82,7 @@ export class RegisterPage {
         });
     }
 
-    async registrationSuccessMessageIsDisplayed(username: string) {
+    async registrationSuccessMessageIsDisplayed(username: string=validUser.username) {
         await test.step('Assert that registration success message is displayed', async () => {
             await expect(this.registrationSuccessMessageWithUsername).toContainText(`Welcome ${username}`);
             await expect(this.registrationSuccessMessage).toHaveText('Your account was created successfully. You are now logged in.');

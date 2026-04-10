@@ -43,3 +43,10 @@ export interface PayeeData {
         zipCode: string;
         phoneNumber: string;
     }
+
+export interface FinanceData {
+    amountToTransfer: string;
+    amountToBillPay: string;
+    loanAmount: string;
+    downPayment: string;
+}
