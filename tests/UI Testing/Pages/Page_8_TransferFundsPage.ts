@@ -52,6 +52,17 @@ export class TransferFundsPage {
             await expect(this.transferButton).toBeVisible();
         });
     }
+
+        async verifyTransferFundsPageIsNotOpened() {
+        await test.step(`Assert that Transfer Funds page is Not opened`, async () => {
+            await expect(this.transferFundsPageMessage).not.toBeVisible();
+            await expect(this.amount).not.toBeVisible();
+            await expect(this.fromAccountNum).not.toBeVisible();
+            await expect(this.toAccountNum).not.toBeVisible();
+            await expect(this.transferButton).not.toBeVisible();
+        });
+    }
+
     async verifyTransferIsComplete() {
         await test.step(`Assert that transfer is complete`, async () => {
             await expect(this.transferDone).toBeVisible();

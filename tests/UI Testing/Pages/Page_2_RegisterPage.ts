@@ -82,6 +82,13 @@ export class RegisterPage {
         });
     }
 
+        async verifyRegisterPageIsNotOpened() {
+        await test.step('Assert that Register Page is Not opened', async () => {
+            await expect.soft(this.registerPage_WelcomeMessage).not.toBeVisible(({ timeout: 500 }));
+            await expect.soft(this.firstNameField).not.toBeVisible(({ timeout: 500 }));
+        });
+    }
+
     async verifyRegistrationSuccessMessageIsDisplayed(username: string) :Promise<boolean>{
        return await test.step('Assert that registration success message is displayed', async () => {
             try {

@@ -73,6 +73,12 @@ export class UpdateProfilePage {
             await expect(this.updateProfilePageMessage).toBeVisible();
         });
     }
+
+        async verifyUpdateProfilePageIsNotOpened() {
+        await test.step('Assert that Update Profile Page is Not opened', async () => {
+            await expect(this.updateProfilePageMessage).not.toBeVisible();
+        });
+    }
     async verifyUpdateSuccessfulMessageIsDisplayed() {
         await test.step('Assert that successful message is displayed', async () => {
             await expect(this.successfulMessage).toBeVisible();

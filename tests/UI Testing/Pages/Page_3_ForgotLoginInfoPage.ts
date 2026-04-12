@@ -71,6 +71,14 @@ export class ForgotLoginInfoPage {
         });
     }
 
+        async verifyForgotLoginInfoPageIsNotOpened() {
+        await test.step(`Assert that Forgot Login Info Page is Not opened`, async () => {
+            await expect.soft(this.forgotLoginInfoPageMessage).not.toBeVisible(({ timeout: 500 }));
+            await expect.soft(this.forgotLoginInfoPageMessage).not.toHaveText('Customer Lookup',({ timeout: 500 }));
+            await expect.soft(this.firstName).not.toBeVisible(({ timeout: 500 }));
+        });
+    }
+
     async verifyRetrievedLoginInfoIsDisplayed(username: string, password: string) {
         await test.step(`Assert that retrieved login info is displayed`, async () => {
             await expect(this.retrievedUNamePasswordMessage).toBeVisible();

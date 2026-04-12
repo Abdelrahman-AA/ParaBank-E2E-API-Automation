@@ -4,7 +4,7 @@ export const scenario_3_RetrieveLoginInfo = () => {
 
     test.describe('Scenario 3: Retrieve Forgotten Login Information', () => {
 
-        test('Go to ParaBank website, Open "Forgot Login Information" page, Enter required information, Retrieve login info, Verify displayed username and password, Log out if "Log Out" button is displayed', async ({ homePage, forgotLoginInfoPage, staticToolBarLinks,testData }) => {
+        test('Go to ParaBank website, Open "Forgot Login Information" page, Enter required information, Retrieve login info, Verify displayed username and password, Log out if "Log Out" button is displayed', async ({ homePage, forgotLoginInfoPage, staticToolBarLinks, testData }) => {
             await test.step('Go to ParaBank website', async () => {
                 await homePage.goToHomePage();
                 await homePage.verifyHomePageIsOpened();
@@ -32,6 +32,11 @@ export const scenario_3_RetrieveLoginInfo = () => {
                 await staticToolBarLinks.logout();
                 await homePage.verifyHomePageIsOpened();
             });
+
+            await test.step('Finish Scenario', async () => {
+                console.log('Scenario 3 Finished');
+            });
+
         });
     });
 }

@@ -45,6 +45,14 @@ export class NewAccountPage {
             await expect(this.accountType).toBeVisible();
         });
     }
+
+        async verifyNewAccountPageIsNotOpened() {
+        await test.step(`Assert that Open New Account page is Not opened`, async () => {
+            await expect(this.openNewAccountPageWelcomeMessage).not.toBeVisible();
+            await expect(this.accountType).not.toBeVisible();
+        });
+    }
+
     async verifyAccountOpenedSuccessfully() {
         await test.step(`Assert that new account is opened successfully`, async () => {
             await expect(this.accountOpened).toBeVisible();

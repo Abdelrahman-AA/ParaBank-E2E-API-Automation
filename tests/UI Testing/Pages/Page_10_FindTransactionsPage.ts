@@ -32,8 +32,8 @@ export class FindTransactionsPage {
         this.findTransactionByDateRangeButton = page.locator("#findByDateRange");
         this.transactionAmount = page.locator("#amount");
         this.findTransactionByAmountButton = page.locator("#findByAmount");
-        this.foundTransactionSent = page.locator('a').filter({ hasText: 'Funds Transfer Sent' });
-        this.fundsTransferReceived = page.locator('a').filter({ hasText: 'Funds Transfer Received' });
+        this.foundTransactionSent = page.locator('tr').filter({ hasText: 'Funds Transfer Sent' }).locator('a').first();
+        this.fundsTransferReceived = page.locator('tr').filter({ hasText: 'Funds Transfer Received' }).locator('a').first();
         this.transactionDetails = page.locator("//h1[normalize-space()='Transaction Details']");
     }
 
@@ -44,7 +44,7 @@ export class FindTransactionsPage {
             await this.page.waitForLoadState('networkidle');
         });
     }
-    async findTransactionById(accountIdIndex: number = 0, transactionId: string) {
+    async findTransactionById(transactionId: string, accountIdIndex: number = 0) {
         await test.step(`Find transaction by ID: ${transactionId}`, async () => {
             await this.accountIdSelector.selectOption({ index: accountIdIndex });
             await this.transactionId.fill(transactionId);
@@ -53,7 +53,7 @@ export class FindTransactionsPage {
         });
     }
 
-    async findTransactionByDate(accountIdIndex: number = 0, date: string) {
+    async findTransactionByDate(date: string, accountIdIndex: number = 0) {
         await test.step(`Find transaction by date: ${date}`, async () => {
             await this.accountIdSelector.selectOption({ index: accountIdIndex });
             await this.transactionDate.fill(date);
@@ -61,7 +61,7 @@ export class FindTransactionsPage {
             await this.page.waitForLoadState('networkidle');
         });
     }
-    async findTransactionByDateRange(accountIdIndex: number = 0, from: string, to: string) {
+    async findTransactionByDateRange(from: string, to: string, accountIdIndex: number = 0,) {
         await test.step(`Find transaction by date range: from ${from} to ${to}`, async () => {
             await this.accountIdSelector.selectOption({ index: accountIdIndex });
             await this.fromDate.fill(from);
@@ -70,7 +70,7 @@ export class FindTransactionsPage {
             await this.page.waitForLoadState('networkidle');
         });
     }
-    async findTransactionByAmount(accountIdIndex: number = 0, amount: string) {
+    async findTransactionByAmount(amount: string, accountIdIndex: number = 0,) {
         await test.step(`Find transaction by amount: ${amount}`, async () => {
             await this.accountIdSelector.selectOption({ index: accountIdIndex });
             await this.transactionAmount.fill(amount);
@@ -85,6 +85,13 @@ export class FindTransactionsPage {
             await expect(this.page).toHaveURL(new RegExp(URLs.FindTransactionsPage));
             await expect(this.findTransactionsMessage).toBeVisible();
             await expect(this.accountIdSelector).toBeVisible();
+        });
+    }
+
+        async verifyFindTransactionsPageIsNotOpened() {
+        await test.step('Assert that Find Transactions page is Not opened', async () => {
+            await expect(this.findTransactionsMessage).not.toBeVisible();
+            await expect(this.accountIdSelector).not.toBeVisible();
         });
     }
     async verifyFoundTransactionIsSent() {

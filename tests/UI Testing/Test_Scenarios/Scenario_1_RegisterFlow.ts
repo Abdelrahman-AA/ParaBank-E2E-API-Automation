@@ -4,7 +4,7 @@ export const scenario_1_RegistrationFlow = () => {
 
     test.describe('Scenario 1: Registration Flow', () => {
 
-        test('Go to Register Page from Home page and Register a new user and Log out', async ({ homePage, registerPage, staticToolBarLinks,testData }) => {
+        test('Go to Register Page from Home page and Register a new user and Log out', async ({ homePage, registerPage, staticToolBarLinks, testData }) => {
             await test.step('Go to Home Page', async () => {
                 await homePage.goToHomePage();
                 await homePage.verifyHomePageIsOpened();
@@ -14,17 +14,6 @@ export const scenario_1_RegistrationFlow = () => {
                 await homePage.clickOnRegister();
                 await registerPage.verifyRegisterPageIsOpened();
             });
-
-            // await test.step('Register a new user', async () => {
-            //     await registerPage.fillRegistrationForm(userData);
-            //     await registerPage.register();
-            //     const isSuccess = await registerPage.registrationSuccessMessageIsDisplayed(userData.username);
-            //     if(!isSuccess) {
-            //         // (globalThis as any).process.exit(1);
-            //         (globalThis as any).process.kill((globalThis as any).process.pid, 'SIGINT');
-
-            //     }
-            // });
 
             await test.step('Register a new user', async () => {
                 await registerPage.fillRegistrationForm(testData.validUser);
@@ -41,6 +30,10 @@ export const scenario_1_RegistrationFlow = () => {
             await test.step('Log out from the successfully registered page', async () => {
                 await staticToolBarLinks.logout();
                 await homePage.verifyHomePageIsOpened();
+            });
+
+            await test.step('Finish Scenario', async () => {
+                console.log('Scenario 1 Finished');
             });
 
         });

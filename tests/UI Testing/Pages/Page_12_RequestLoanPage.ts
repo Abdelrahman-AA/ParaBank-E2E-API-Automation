@@ -31,14 +31,15 @@ export class RequestLoanPage {
         });
     }
 
-async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number = 0) {
-    await test.step(`Apply for loan with amount $${amount}, down payment $${downPayment} from account index ${fromAccountIndex}`, async () => {
-        await this.loanAmount.fill(amount);
-        await this.downPayment.fill(downPayment);
-        await this.fromAccount.selectOption({index : fromAccountIndex});
-        await this.applyNowButton.click();
-        await this.page.waitForLoadState('networkidle');
-    });}
+    async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number = 0) {
+        await test.step(`Apply for loan with amount $${amount}, down payment $${downPayment} from account index ${fromAccountIndex}`, async () => {
+            await this.loanAmount.fill(amount);
+            await this.downPayment.fill(downPayment);
+            await this.fromAccount.selectOption({ index: fromAccountIndex });
+            await this.applyNowButton.click();
+            await this.page.waitForLoadState('networkidle');
+        });
+    }
 
     //assertions
     async verifyRequestLoanPageIsOpened() {
@@ -49,9 +50,22 @@ async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number
         });
     }
 
+        async verifyRequestLoanPageIsNotOpened() {
+        await test.step('Assert that Request Loan page is Not opened', async () => {
+            await expect(this.applyForLoanPageMessage).not.toBeVisible();
+            await expect(this.fromAccount).not.toBeVisible();
+        });
+    }
+
     async verifyLoanRequestIsProcessed() {
         await test.step('Assert that loan request is processed', async () => {
             await expect(this.loanRequestProcessed).toBeVisible();
+        });
+    }
+
+    async verifyLoanIsApproved() {
+        await test.step('Assert that loan request is processed', async () => {
             await expect(this.loanApproved).toBeVisible();
-        });}
+        });
+    }
 }

@@ -47,8 +47,8 @@ export const getPayeeInfo=(): TestDataInterfaces.PayeeData => ({
     addressState: faker.location.state(),
     addressZipCode: faker.location.zipCode(),
     phoneNumber: faker.phone.number(),
-    accountNumber: "acc",
-    verifyAccount: "acc",
+    accountNumber: "00000",
+    verifyAccount: "00000",
     amount: '100.00'
 });
 

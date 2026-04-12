@@ -32,7 +32,7 @@ export class BillPayPage {
         this.amount = page.locator("//input[@name='amount']");
         this.fromAccountId = page.locator("//select[@name='fromAccountId']");
         this.sendPaymentButton = page.locator("//input[@value='Send Payment']");
-        this.billPaymentComplete = page.locator("//h1[@class='title' and text()='Bill Payment Complete']");
+        this.billPaymentComplete = page.locator("//h1[normalize-space()='Bill Payment Complete']");
     }
 
     //methods
@@ -73,6 +73,12 @@ export class BillPayPage {
         await test.step(`Assert that Bill Pay page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.BillPayPage));
             await expect(this.billPayPagePageMessage).toBeVisible();
+        });
+    }
+
+       async verifyBillPayPageIsNotOpened() {
+        await test.step(`Assert that Bill Pay page is Not opened`, async () => {
+            await expect(this.billPayPagePageMessage).not.toBeVisible();
         });
     }
     async verifyBillPaymentCompleteIsDisplayed() {

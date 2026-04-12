@@ -11,7 +11,7 @@ export const scenario_2_LoginFlow = () => {
             });
 
             await test.step('Log in with valid credentials', async () => {
-                await homePage.login(testData.validUser.username,testData.validUser.password);
+                await homePage.login(testData.validUser.username, testData.validUser.password);
             });
 
             await test.step('Verify that the customer account page is loaded successfully', async () => {
@@ -23,6 +23,11 @@ export const scenario_2_LoginFlow = () => {
                 await staticToolBarLinks.logout();
                 await homePage.verifyHomePageIsOpened();
             });
+
+            await test.step('Finish Scenario', async () => {
+                console.log('Scenario 2 Finished');
+            });
+
         });
     });
 }

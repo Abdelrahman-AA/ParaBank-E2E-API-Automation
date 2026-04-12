@@ -68,6 +68,10 @@ export const scenario_4_UpdateUserInfo = () => {
                 await homePage.verifyHomePageIsOpened();
             });
 
+            await test.step('Finish Scenario', async () => {
+                console.log('Scenario 4 Finished');
+            });
+
         });
     });
 }
