@@ -1,3 +1,4 @@
-export * from './002_Interfaces';
-export * from './001_URLs';
-export * from './003_TestData';
+export *  from'./001_URLs';
+export * as TestDataInterfaces from './002_Interfaces';
+export * as TestDataGenerator from './003_ForTestDataGeneration';
+export { TestData } from './004_GenratedTestData';

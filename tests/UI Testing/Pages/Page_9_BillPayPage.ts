@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,PayeeData } from '../Data/0_DataIndex';
+import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
 
 export class BillPayPage {
 
@@ -43,7 +43,7 @@ export class BillPayPage {
         })
     }
 
-    async fillBillPayForm(payeeData: PayeeData, index: number = 0) {
+    async fillBillPayForm(payeeData: TestDataInterfaces.PayeeData, index: number = 0) {
         await test.step('Fill the Bill Pay form', async () => {
             await this.payeeName.fill(payeeData.name);
             await this.payeeAddressStreet.fill(payeeData.addressStreet);
@@ -57,7 +57,7 @@ export class BillPayPage {
             await this.fromAccountId.selectOption({ index: index });
         });
     }
-    async sendPayment(payeeData?: PayeeData) {
+    async sendPayment(payeeData?: TestDataInterfaces.PayeeData) {
         await test.step('Submit payment request', async () => {
             if (payeeData) {
                 await this.fillBillPayForm(payeeData);
@@ -68,14 +68,14 @@ export class BillPayPage {
         }
 
     //assertions
-    async billPayPageIsOpened() {
+    async verifyBillPayPageIsOpened() {
         
         await test.step(`Assert that Bill Pay page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.BillPayPage));
             await expect(this.billPayPagePageMessage).toBeVisible();
         });
     }
-    async billPaymentCompleteIsDisplayed() {
+    async verifyBillPaymentCompleteIsDisplayed() {
         await test.step(`Assert that Bill Payment Complete message is displayed`, async () => {
             await expect(this.billPaymentComplete).toBeVisible();
         });

@@ -42,7 +42,7 @@ export class TransferFundsPage {
     }
 
     //assertions
-    async transferFundsPageIsOpened() {
+    async verifyTransferFundsPageIsOpened() {
         await test.step(`Assert that Transfer Funds page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.TransferFundsPage));
             await expect(this.transferFundsPageMessage).toBeVisible();
@@ -52,7 +52,7 @@ export class TransferFundsPage {
             await expect(this.transferButton).toBeVisible();
         });
     }
-    async transferIsComplete() {
+    async verifyTransferIsComplete() {
         await test.step(`Assert that transfer is complete`, async () => {
             await expect(this.transferDone).toBeVisible();
             await expect(this.successfullyTransferMessage).toBeVisible();

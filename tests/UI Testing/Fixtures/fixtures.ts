@@ -1,8 +1,10 @@
 import { test as base, expect } from '@playwright/test';
-
 import * as Pages from '../Pages/0_PagesIndex';
+import { TestData } from '../Data/0_DataIndex';
 
 type MyFixtures = {
+    testData: typeof TestData;
+
     staticToolBarLinks: Pages.staticToolBarLinks;
     homePage: Pages.HomePage;
     registerPage: Pages.RegisterPage;
@@ -18,20 +20,58 @@ type MyFixtures = {
     requestLoanPage: Pages.RequestLoanPage;
 };
 
-export const test = base.extend<MyFixtures, { dbCleaned: void }>({
+type MyWorkerFixtures = {
+    dbCleaned: void;
+};
 
-dbCleaned: [async ({ playwright }, use) => {
-        await test.step('Global Setup: Clean Database via API', async () => {
-            const requestContext = await playwright.request.newContext();
-            const response = await requestContext.post('https://parabank.parasoft.com/parabank/services/bank/cleanDB');
-            
-            expect(response.ok(), 'Database cleanup failed before starting the run').toBeTruthy();
-            
-            await requestContext.dispose();
-        });
+export const test = base.extend<MyFixtures, MyWorkerFixtures>({
+
+    // dbCleaned: [async ({ playwright }, use) => {
+    //     const requestContext = await playwright.request.newContext();
+    //     const response = await requestContext.post('https://parabank.parasoft.com/parabank/services/bank/cleanDB');
+    //     await new Promise(resolve => setTimeout(resolve, 1000));
+    //     expect(response.ok()).toBeTruthy();
+    //     await requestContext.dispose();
+    //     await use();
+    // }, { scope: 'worker', auto: true }],
+
+    dbCleaned: [async ({ playwright }, use, testInfo) => {
+        const requestContext = await playwright.request.newContext();
+
+        if (testInfo.workerIndex === 0) {
+            console.log('--- Global DB Reset Started (Worker 0) ---');
+
+            try {
+                const cleanResponse = await requestContext.post('https://parabank.parasoft.com/parabank/services/bank/cleanDB');
+                console.log(`--- 1. CleanDB Status: ${cleanResponse.status()} ---`);
+                expect(cleanResponse.ok()).toBeTruthy();
+
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const initResponse = await requestContext.post('https://parabank.parasoft.com/parabank/services/bank/initializeDB');
+                console.log(`--- 2. InitializeDB Status: ${initResponse.status()} ---`);
+                expect(initResponse.ok()).toBeTruthy();
+
+                console.log('--- Database is Clean and Initialized! ---');
+
+            } catch (error) {
+                console.error('--- DB Reset Failed! ---', error);
+            }
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        await requestContext.dispose();
         await use();
     }, { scope: 'worker', auto: true }],
 
+
+    testData: async ({ }, use) => {
+        const savedData = JSON.parse(fs.readFileSync('./test-data.json', 'utf-8'));
+        Object.assign(TestData, savedData);
+
+        await use(TestData);
+    },
 
     homePage: async ({ page }, use) => { await use(new Pages.HomePage(page)); },
     registerPage: async ({ page }, use) => { await use(new Pages.RegisterPage(page)); },

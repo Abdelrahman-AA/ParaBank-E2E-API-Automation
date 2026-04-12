@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs, UpdateProfileData, updateProfileInfo } from '../Data/0_DataIndex';
+import { URLs, TestDataInterfaces } from '../Data/0_DataIndex';
 
 export class UpdateProfilePage {
 
@@ -37,7 +37,7 @@ export class UpdateProfilePage {
         });
     }
 
-    async fillUpdateProfileForm(updateProfileData: UpdateProfileData = updateProfileInfo) {
+    async fillUpdateProfileForm(updateProfileData: TestDataInterfaces.UpdateProfileData) {
         await test.step('Fill the Update Profile form', async () => {
             await this.customerFirstName.clear();
             await this.customerLastName.clear();
@@ -56,7 +56,7 @@ export class UpdateProfilePage {
             await this.customerPhoneNumber.fill(updateProfileData.phoneNumber);
         });
     }
-    async submitUpdateProfileForm(updateProfileData?: UpdateProfileData) {
+    async submitUpdateProfileForm(updateProfileData?: TestDataInterfaces.UpdateProfileData) {
         await test.step('Submit Update Profile form', async () => {
             if (updateProfileData) {
                 await this.fillUpdateProfileForm(updateProfileData);
@@ -67,19 +67,19 @@ export class UpdateProfilePage {
     }
 
     //assertions
-    async updateProfilePageIsOpened() {
+    async verifyUpdateProfilePageIsOpened() {
         await test.step('Assert that Update Profile Page is opened', async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.UpdateProfilePage));
             await expect(this.updateProfilePageMessage).toBeVisible();
         });
     }
-    async updateSuccessfulMessageIsDisplayed() {
+    async verifyUpdateSuccessfulMessageIsDisplayed() {
         await test.step('Assert that successful message is displayed', async () => {
             await expect(this.successfulMessage).toBeVisible();
         });
     }
 
-    async verifyProfileDataUpdated(updateProfileData: UpdateProfileData = updateProfileInfo) {
+    async verifyProfileDataUpdated(updateProfileData: TestDataInterfaces.UpdateProfileData) {
         await test.step('Assert that updated data is still persisted correctly', async () => {
 
             await expect(this.customerFirstName).toHaveValue(updateProfileData.firstName);

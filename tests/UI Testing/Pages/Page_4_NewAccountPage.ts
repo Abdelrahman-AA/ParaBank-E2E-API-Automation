@@ -14,7 +14,7 @@ export class NewAccountPage {
     constructor(public page: Page) {
         this.openNewAccountPageWelcomeMessage = page.locator("//h1[@class='title' and text()='Open New Account']");
         this.accountType = page.locator("#type");
-        this.openNewAccountButton = page.locator("//input[@type='button' and @value='Open New Account']");
+        this.openNewAccountButton = page.locator("input[value='Open New Account']");
         this.accountOpened = page.locator("//h1[@class='title' and text()='Account Opened!']");
         this.successfullyAccountOpenedMessage = page.locator("//p[text()='Congratulations, your account is now open.']");
     }
@@ -31,20 +31,21 @@ export class NewAccountPage {
         const index = type === 'CHECKING' ? 0 : 1;
         await test.step(`Open a new ${type} account`, async () => {
             await this.accountType.selectOption({ index: index });
+            await this.page.waitForLoadState('networkidle');
             await this.openNewAccountButton.click();
             await this.page.waitForLoadState('networkidle');
         });
     }
 
     //assertions
-    async newAccountPageIsOpened() {
+    async verifyNewAccountPageIsOpened() {
         await test.step(`Assert that Open New Account page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.OpenNewAccountPage));
             await expect(this.openNewAccountPageWelcomeMessage).toBeVisible();
             await expect(this.accountType).toBeVisible();
         });
     }
-    async accountOpenedSuccessfully() {
+    async verifyAccountOpenedSuccessfully() {
         await test.step(`Assert that new account is opened successfully`, async () => {
             await expect(this.accountOpened).toBeVisible();
             await expect(this.successfullyAccountOpenedMessage).toBeVisible();

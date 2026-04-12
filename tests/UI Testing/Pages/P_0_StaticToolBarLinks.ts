@@ -1,5 +1,4 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { validUser } from '../Data/0_DataIndex';
 
 export class staticToolBarLinks {
 
@@ -18,13 +17,14 @@ export class staticToolBarLinks {
     constructor(public page: Page) {
         this.openNewAccountCTA = page.getByRole('link', { name: 'Open New Account' });
         this.accountsOverviewCTA = page.getByRole('link', { name: 'Accounts Overview' });
-        this.transferFundsCTA = page.getByRole('link', { name: 'Transfer Funds' });
-        this.billPayCTA = page.getByRole('link', { name: 'Bill Pay' });
+        this.transferFundsCTA = page.locator("a[href='transfer.htm']");
+        this.billPayCTA = page.locator("a[href='billpay.htm']");
         this.findTransactionsCTA = page.getByRole('link', { name: 'Find Transactions' });
         this.updateContactInfoCTA = page.getByRole('link', { name: 'Update Contact Info' });
         this.requestLoanCTA = page.getByRole('link', { name: 'Request Loan' });
         this.logOutCTA = page.getByRole('link', { name: 'Log Out' });
-        this.welcomeAndName = page.locator("//p[@class='smallText']");
+        // this.welcomeAndName = page.locator("p[class='smallText'] b");
+        this.welcomeAndName = page.locator('p.smallText');
     }
 
     //methods
@@ -36,8 +36,15 @@ export class staticToolBarLinks {
         });
     }
 
+    async clickOnOpenNewAccount() {
+        await test.step(`Click on Open New Account Link`, async () => {
+            await this.openNewAccountCTA.click();
+            await this.page.waitForLoadState('networkidle');
+        });
+    }
+
     //assertions
-    async staticToolBarLinksIsVisible() {
+    async verifyStaticToolBarLinksIsVisible() {
         await test.step(`Verify that all the static toolbar links are visible`, async () => {
             await expect(this.welcomeAndName).toBeVisible();
             await expect(this.openNewAccountCTA).toBeVisible();
@@ -51,11 +58,19 @@ export class staticToolBarLinks {
         });
     }
 
-    async welcomeMessageContainsName(name: string = (validUser.firstName + ' ' + validUser.lastName), isSoft: boolean = false) {
-        await test.step(`Verify that the welcome message contains the user's name`, async () => {
-            const assertion = isSoft ? expect.soft(this.welcomeAndName) : expect(this.welcomeAndName);
-            await assertion.toContainText(name, { ignoreCase: true });
-        });
+    // async welcomeMessageContainsName(FName: string,LName : string , isSoft: boolean = false) {
+    //     await test.step(`Verify that the welcome message contains the user's name`, async () => {
+    //         const assertion = isSoft ? expect.soft(this.welcomeAndName) : expect(this.welcomeAndName);
+    //         await assertion.toContainText((FName + ' ' + LName), { ignoreCase: true });
+    //     });
 
-    }
+    // }
+
+    async verifyWelcomeMessageContainsName(FName: string, LName: string, isSoft: boolean = false) {
+    await test.step(`Verify that the welcome message contains the user's name`, async () => {
+        const fullName = `${FName} ${LName}`;
+        const assertion = isSoft ? expect.soft(this.welcomeAndName) : expect(this.welcomeAndName);
+        await assertion.toHaveText(new RegExp(`Welcome\\s+${fullName}`, 'i'));
+    });
+}
 }

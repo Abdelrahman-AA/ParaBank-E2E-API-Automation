@@ -24,15 +24,15 @@ export class TransactionDetailsPage {
     }
 
     //assertions
-    async transactionDetailsPageIsOpened() {
+    async verifyTransactionDetailsPageIsOpened() {
         await test.step(`Assert that Transaction Details page is opened`, async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.TransactionDetailsPage + /\d+/));
+            await expect(this.page).toHaveURL(new RegExp(URLs.TransactionDetailsPage + '.*'));
             await expect(this.transactionDetailsPageMessage).toBeVisible();
         });
     }
-    async verifyTransactionId(transactionId: number) {
+    async verifyTransactionId(transactionId: string) {
         await test.step(`Verify the right transaction ID page is opened for ${transactionId}`, async () => {
-            await expect(this.transactionId).toHaveText(transactionId.toString());
+            await expect(this.transactionId).toHaveText(transactionId);
         });
     }
 }

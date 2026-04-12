@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,ForgotLoginInfoData, forgotLoginInfo, validUser } from '../Data/0_DataIndex';
+import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
 
 export class ForgotLoginInfoPage {
 
@@ -39,7 +39,7 @@ export class ForgotLoginInfoPage {
         });
     }
 
-    async fillForgotLoginInfoForm(forgotLoginInfoData: ForgotLoginInfoData = forgotLoginInfo) {
+    async fillForgotLoginInfoForm(forgotLoginInfoData: TestDataInterfaces.ForgotLoginInfoData) {
         await test.step(`Fill the Forgot Login Info form`, async () => {
             await this.firstName.fill(forgotLoginInfoData.firstName);
             await this.lastName.fill(forgotLoginInfoData.lastName);
@@ -51,7 +51,7 @@ export class ForgotLoginInfoPage {
         });
     }
 
-    async findMyLoginInfo(forgotLoginInfoData?: ForgotLoginInfoData) {
+    async findMyLoginInfo(forgotLoginInfoData?: TestDataInterfaces.ForgotLoginInfoData) {
         await test.step(`Submit Customer Lookup request`, async () => {
             if (forgotLoginInfoData) {
                 await this.fillForgotLoginInfoForm(forgotLoginInfoData);
@@ -62,7 +62,7 @@ export class ForgotLoginInfoPage {
     }
 
     //assertions
-    async ForgotLoginInfoPageIsOpened() {
+    async verifyForgotLoginInfoPageIsOpened() {
         await test.step(`Assert that Forgot Login Info Page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.ForgotLoginInfoPage));
             await expect(this.forgotLoginInfoPageMessage).toBeVisible();
@@ -71,7 +71,7 @@ export class ForgotLoginInfoPage {
         });
     }
 
-    async retrievedLoginInfoIsDisplayed(username: string = validUser.username, password: string = validUser.password) {
+    async verifyRetrievedLoginInfoIsDisplayed(username: string, password: string) {
         await test.step(`Assert that retrieved login info is displayed`, async () => {
             await expect(this.retrievedUNamePasswordMessage).toBeVisible();
             await expect(this.retrievedInfoParagraph).toBeVisible();

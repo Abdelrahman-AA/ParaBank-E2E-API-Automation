@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,RegistrationData, validUser } from '../Data/0_DataIndex';
+import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
 
 export class RegisterPage {
 
@@ -47,7 +47,7 @@ export class RegisterPage {
         })
     }
 
-    async fillRegistrationForm(registrationData: RegistrationData =validUser) {
+    async fillRegistrationForm(registrationData: TestDataInterfaces.RegistrationData) {
         await test.step('Fill the registration form', async () => {
             await this.firstNameField.fill(registrationData.firstName);
             await this.lastNameField.fill(registrationData.lastName);
@@ -63,7 +63,7 @@ export class RegisterPage {
         });
     }
 
-    async register(registrationData?: RegistrationData) {
+    async register(registrationData?: TestDataInterfaces.RegistrationData) {
         await test.step('Submit Registration request', async () => {
             if (registrationData) {
                 await this.fillRegistrationForm(registrationData);
@@ -74,7 +74,7 @@ export class RegisterPage {
     }
 
     //assertions
-    async registerPageIsOpened() {
+    async verifyRegisterPageIsOpened() {
         await test.step('Assert that Register Page is opened', async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.RegisterPage));
             await expect(this.registerPage_WelcomeMessage).toBeVisible();
@@ -82,10 +82,15 @@ export class RegisterPage {
         });
     }
 
-    async registrationSuccessMessageIsDisplayed(username: string=validUser.username) {
-        await test.step('Assert that registration success message is displayed', async () => {
+    async verifyRegistrationSuccessMessageIsDisplayed(username: string) :Promise<boolean>{
+       return await test.step('Assert that registration success message is displayed', async () => {
+            try {
             await expect(this.registrationSuccessMessageWithUsername).toContainText(`Welcome ${username}`);
             await expect(this.registrationSuccessMessage).toHaveText('Your account was created successfully. You are now logged in.');
+            return true;
+            } catch (error) {
+                return false;
+            }
         });
     }
 

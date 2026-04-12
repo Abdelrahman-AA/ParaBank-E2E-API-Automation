@@ -41,7 +41,7 @@ async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number
     });}
 
     //assertions
-    async requestLoanPageIsOpened() {
+    async verifyRequestLoanPageIsOpened() {
         await test.step('Assert that Request Loan page is opened', async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.RequestLoanPage));
             await expect(this.applyForLoanPageMessage).toBeVisible();
@@ -49,7 +49,7 @@ async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number
         });
     }
 
-    async loanRequestIsProcessed() {
+    async verifyLoanRequestIsProcessed() {
         await test.step('Assert that loan request is processed', async () => {
             await expect(this.loanRequestProcessed).toBeVisible();
             await expect(this.loanApproved).toBeVisible();

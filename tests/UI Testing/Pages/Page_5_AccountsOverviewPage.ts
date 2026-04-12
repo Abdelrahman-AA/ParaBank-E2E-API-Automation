@@ -25,7 +25,7 @@ export class AccountsOverviewPage {
     }
 
     // Assertions
-    async accountsOverviewPageIsOpened() {
+    async verifyAccountsOverviewPageIsOpened() {
         await test.step(`Assert that Accounts Overview page is opened`, async () => {
             await expect(this.accountsOverviewPageMessage).toBeVisible();
             await expect(this.accountTable).toBeVisible();

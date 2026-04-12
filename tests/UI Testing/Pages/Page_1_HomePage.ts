@@ -1,5 +1,5 @@
 import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs, validUser } from '../Data/0_DataIndex';
+import { URLs } from '../Data/0_DataIndex';
 
 export class HomePage {
 
@@ -45,7 +45,7 @@ export class HomePage {
 
     }
 
-    async login(username: string=validUser.username, password: string=validUser.password) {
+    async login(username: string, password: string) {
         await test.step(`Login with user: ${username}`, async () => {
             await this.userNameField.fill(username);
             await this.passwordField.fill(password);
@@ -55,7 +55,7 @@ export class HomePage {
     }
 
     //assertions
-    async homePageIsOpened() {
+    async verifyHomePageIsOpened() {
         await test.step(`Assert that Home Page is opened`, async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.HOMEPage));
         await expect(this.logo).toBeVisible();

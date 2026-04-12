@@ -80,7 +80,7 @@ export class FindTransactionsPage {
     }
 
     //assertions
-    async findTransactionsPageIsOpened() {
+    async verifyFindTransactionsPageIsOpened() {
         await test.step('Assert that Find Transactions page is opened', async () => {
             await expect(this.page).toHaveURL(new RegExp(URLs.FindTransactionsPage));
             await expect(this.findTransactionsMessage).toBeVisible();
