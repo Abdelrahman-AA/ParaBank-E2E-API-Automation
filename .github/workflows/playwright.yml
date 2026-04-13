@@ -9,6 +9,11 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pages: write
+      id-token: write 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -19,8 +24,59 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
+      id: playwright-tests
       continue-on-error: true
       run: npx playwright test
+
+    - name: Setup Pages
+      if: always()
+      uses: actions/configure-pages@v4
+
+    - name: Upload Pages Artifact
+      if: always()
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: 'playwright-report/'
+
+    - name: Deploy to GitHub Pages
+      if: always()
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+    - name: Create Issue on Failure
+      if: steps.playwright-tests.outcome == 'failure'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const repoName = context.repo.repo;
+          const ownerName = context.repo.owner;
+          const runId = context.runId;
+          const pagesUrl = `https://${ownerName}.github.io/${repoName}/`;
+          
+          const issueBody = `### 🚨 Automated Test Failure Detected
+
+          **Description:** One or more tests failed during the automated Playwright run.
+
+          **Quick Access:**
+          - 🌐 **Live Report (Screenshots & Traces):** [View Test Report](${pagesUrl})
+          - 🛠️ **GitHub Action Run:** [View Logs & Artifacts](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
+
+          **Next Steps:**
+          1. Open the **Live Report** link above to investigate the failure.
+          2. Check the **Trace Viewer** and **Screenshots** for the failed assertions.
+          3. Compare with known site bugs in ParaBank.
+
+          ---
+          *This issue was generated automatically by GitHub Actions.*`;
+
+          await github.rest.issues.create({
+            owner: ownerName,
+            repo: repoName,
+            title: ' Automated Bug Found: ParaBank Test Failure',
+            body: issueBody,
+            labels: ['bug', 'automated']
+          });
+
     - uses: actions/upload-artifact@v4
       # if: ${{ !cancelled() }}
       if: always()

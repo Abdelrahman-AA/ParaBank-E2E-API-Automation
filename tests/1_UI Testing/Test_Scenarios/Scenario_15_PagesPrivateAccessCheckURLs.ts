@@ -1,6 +1,6 @@
 import { test } from '../Fixtures/fixtures';
 
-export const Scenario_15_PagesPrivateAccessCheckURLs = () => {
+export const scenario_15_PagesPrivateAccessCheckURLs = () => {
 
     test.describe('Scenario 15: Pages Private Access Check URLs', () => {
 

@@ -1,6 +1,6 @@
 import { test } from '../Fixtures/fixtures';
 
-export const Scenario_16_NavigatePagesFromSstaticToolBar = () => {
+export const scenario_16_NavigatePagesFromSstaticToolBar = () => {
 
     test.describe('Scenario 16: Navigate Pages From Static Tool Bar', () => {
 

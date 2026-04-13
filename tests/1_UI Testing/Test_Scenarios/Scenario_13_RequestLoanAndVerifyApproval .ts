@@ -1,6 +1,6 @@
 import { test, expect } from '../Fixtures/fixtures';
 
-export const Scenario_13_RequestLoanAndVerifyApproval = () => {
+export const scenario_13_RequestLoanAndVerifyApproval = () => {
 
     test.describe('Scenario 13: Request Loan and Verify Approval', () => {
 

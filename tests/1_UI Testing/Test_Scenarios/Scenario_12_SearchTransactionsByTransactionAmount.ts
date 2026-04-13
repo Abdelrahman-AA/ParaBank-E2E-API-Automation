@@ -1,6 +1,6 @@
 import { test, expect } from '../Fixtures/fixtures';
 
-export const Scenario_12_SearchTransactionsByTransactionAmount = () => {
+export const scenario_12_SearchTransactionsByTransactionAmount = () => {
 
     test.describe('Scenario 12: Search Transactions by Transaction Amount', () => {
 

@@ -13,13 +13,13 @@ test.describe('UI Testing (Execute all test scenarios sequentially)', () => {
     runTest.scenario_6_OpenNewSAVINGSaccount();
     runTest.scenario_7_BillPaymentProcess();
     runTest.scenario_8_TransferAmount();
-    runTest.Scenario_9_SearchTransactionsById();
-    runTest.Scenario_10_SearchTransactionsByTransactionDate();
-    runTest.Scenario_11_SearchTransactionsByDateRange();
-    runTest.Scenario_12_SearchTransactionsByTransactionAmount();
-    runTest.Scenario_13_RequestLoanAndVerifyApproval();
-    runTest.Scenario_14_PagesPublicAccessCheckURLs();
-    runTest.Scenario_15_PagesPrivateAccessCheckURLs();
-    runTest.Scenario_16_NavigatePagesFromSstaticToolBar();
+    runTest.scenario_9_SearchTransactionsById();
+    runTest.scenario_10_SearchTransactionsByTransactionDate();
+    runTest.scenario_11_SearchTransactionsByDateRange();
+    runTest.scenario_12_SearchTransactionsByTransactionAmount();
+    runTest.scenario_13_RequestLoanAndVerifyApproval();
+    runTest.scenario_14_PagesPublicAccessCheckURLs();
+    runTest.scenario_15_PagesPrivateAccessCheckURLs();
+    runTest.scenario_16_NavigatePagesFromSstaticToolBar();
 
 });
