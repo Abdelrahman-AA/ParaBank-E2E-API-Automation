@@ -11,7 +11,7 @@ export { scenario_9_SearchTransactionsById } from './Scenario_9_SearchTransactio
 export { scenario_10_SearchTransactionsByTransactionDate} from './Scenario_10_SearchTransactionsByTransactionDate';
 export { scenario_11_SearchTransactionsByDateRange} from './Scenario_11_SearchTransactionsByDateRange';
 export { scenario_12_SearchTransactionsByTransactionAmount } from './Scenario_12_SearchTransactionsByTransactionAmount';
-export { scenario_13_RequestLoanAndVerifyApproval } from './Scenario_13_RequestLoanAndVerifyApproval ';
+export { scenario_13_RequestLoanAndVerifyApproval } from './Scenario_13_RequestLoanAndVerifyApproval';
 export { scenario_14_PagesPublicAccessCheckURLs } from './Scenario_14_PagesPublicAccessCheckURLs';
 export { scenario_15_PagesPrivateAccessCheckURLs } from './Scenario_15_PagesPrivateAccessCheckURLs';
 export { scenario_16_NavigatePagesFromSstaticToolBar} from './Scenario_16_NavigatePagesFromSstaticToolBar';
