@@ -1,6 +1,6 @@
-import { test } from '../Fixtures/fixtures';
+import { test } from '../1_UI Testing/Fixtures/fixtures';
 
-import * as runTest from '../Test_Scenarios/0_ScenariosIndex';
+import * as runTest from '../1_UI Testing/Test_Scenarios/0_ScenariosIndex';
 
 test.describe('UI Testing (Execute all test scenarios sequentially)', () => {
 
