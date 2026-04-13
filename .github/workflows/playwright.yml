@@ -27,12 +27,15 @@ jobs:
     - name: Run Playwright tests
       id: playwright-tests
       continue-on-error: true
-      run: npx playwright test
+      run: |
+        npx playwright test --reporter=html
 
     - name: Prepare Report for GitHub Pages
       if: always()
       run: |
-        touch playwright-report/.nojekyll
+        if [ -d "playwright-report" ]; then
+          touch playwright-report/.nojekyll
+        fi
 
     - name: Setup Pages
       if: always()
