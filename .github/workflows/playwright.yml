@@ -1,6 +1,5 @@
 name: Playwright Tests
 on:
-  # workflow_dispatch:
   push:
     branches: [ main, master ]
   pull_request:
@@ -27,8 +26,7 @@ jobs:
     - name: Run Playwright tests
       id: playwright-tests
       continue-on-error: true
-      run: |
-        npx playwright test --reporter=html
+      run: npx playwright test
 
     - name: Prepare Report for GitHub Pages
       if: always()
@@ -57,23 +55,32 @@ jobs:
       uses: actions/github-script@v7
       with:
         script: |
+          const fs = require('fs');
           const repoName = context.repo.repo;
           const ownerName = context.repo.owner;
           const runId = context.runId;
           const pagesUrl = `https://${ownerName}.github.io/${repoName}/`;
           
+          let failCount = 0;
+          try {
+            const results = JSON.parse(fs.readFileSync('test-results.json', 'utf8'));
+            failCount = results.stats.unexpected || 0;
+          } catch (e) {
+            console.log("Could not read test-results.json, defaulting to multiple.");
+          }
+
           const issueBody = `### 🚨 Automated Test Failure Detected
 
-          **Description:** One or more tests failed during the automated Playwright run.
+          **Summary:** We detected **${failCount > 0 ? failCount : 'multiple'}** failed test case(s) during the last run.
 
           **Quick Access:**
           - 🌐 **Live Report (Screenshots & Traces):** [View Test Report](${pagesUrl})
           - 🛠️ **GitHub Action Run:** [View Logs & Artifacts](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
 
           **Next Steps:**
-          1. Open the **Live Report** link above to investigate the failure.
-          2. Check the **Trace Viewer** and **Screenshots** for the failed assertions.
-          3. Compare with known site bugs in ParaBank.
+          1. Open the **Live Report** link above to investigate.
+          2. Check the **Trace Viewer** for exact failure points.
+          3. Verify if these are known ParaBank environmental issues.
 
           ---
           *This issue was generated automatically by GitHub Actions.*`;
@@ -81,13 +88,13 @@ jobs:
           await github.rest.issues.create({
             owner: ownerName,
             repo: repoName,
-            title: ' Automated Bug Found: ParaBank Test Failure',
+            title: `🚨 [Failed Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in ParaBank Automation`,
             body: issueBody,
-            labels: ['bug', 'automated']
+            labels: ['bug', 'automated', 'critical']
           });
 
-    - uses: actions/upload-artifact@v4
-      # if: ${{ !cancelled() }}
+    - name: Archive Playwright Artifacts
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: playwright-report
