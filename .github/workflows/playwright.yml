@@ -26,7 +26,9 @@ jobs:
     - name: Run Playwright tests
       id: playwright-tests
       continue-on-error: true
-      run: npx playwright test
+      run: |
+        rm -rf playwright-report test-results.json
+        npx playwright test
 
     - name: Prepare Report for GitHub Pages
       if: always()
@@ -69,13 +71,13 @@ jobs:
             console.log("Could not read test-results.json, defaulting to multiple.");
           }
 
-          const issueBody = `### 🚨 Automated Test Failure Detected
+          const issueBody = `### Automated Test Failure Detected
 
           **Summary:** We detected **${failCount > 0 ? failCount : 'multiple'}** failed test case(s) during the last run.
 
           **Quick Access:**
-          - 🌐 **Live Report (Screenshots & Traces):** [View Test Report](${pagesUrl})
-          - 🛠️ **GitHub Action Run:** [View Logs & Artifacts](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
+          - **Live Report (Screenshots & Traces):** [View Test Report](${pagesUrl})
+          - **GitHub Action Run:** [View Logs & Artifacts](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
 
           **Next Steps:**
           1. Open the **Live Report** link above to investigate.
@@ -88,7 +90,7 @@ jobs:
           await github.rest.issues.create({
             owner: ownerName,
             repo: repoName,
-            title: `🚨 [Failed Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in ParaBank Automation`,
+            title: `[BUGs Detected in Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in ParaBank Automation`,
             body: issueBody,
             labels: ['bug', 'automated', 'critical']
           });
