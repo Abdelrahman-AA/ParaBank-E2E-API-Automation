@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs, TestDataInterfaces } from '../../Data/0_DataIndex';
 
 export class BillPayPage {
 
@@ -37,53 +37,41 @@ export class BillPayPage {
 
     //methods
     async goToBillPayPage() {
-        await test.step('Go to Bill Pay Page', async () => {
-            await this.page.goto(URLs.BillPayPage);
-            await this.page.waitForLoadState('networkidle');
-        })
+        await this.page.goto(URLs.BillPayPage);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async fillBillPayForm(payeeData: TestDataInterfaces.PayeeData, index: number = 0) {
-        await test.step('Fill the Bill Pay form', async () => {
-            await this.payeeName.fill(payeeData.name);
-            await this.payeeAddressStreet.fill(payeeData.addressStreet);
-            await this.payeeAddressCity.fill(payeeData.addressCity);
-            await this.payeeAddressState.fill(payeeData.addressState);
-            await this.payeeAddressZipCode.fill(payeeData.addressZipCode);
-            await this.payeePhoneNumber.fill(payeeData.phoneNumber);
-            await this.payeeAccountNumber.fill(payeeData.accountNumber);
-            await this.verifyAccount.fill(payeeData.verifyAccount);
-            await this.amount.fill(payeeData.amount);
-            await this.fromAccountId.selectOption({ index: index });
-        });
+        await this.payeeName.fill(payeeData.name);
+        await this.payeeAddressStreet.fill(payeeData.addressStreet);
+        await this.payeeAddressCity.fill(payeeData.addressCity);
+        await this.payeeAddressState.fill(payeeData.addressState);
+        await this.payeeAddressZipCode.fill(payeeData.addressZipCode);
+        await this.payeePhoneNumber.fill(payeeData.phoneNumber);
+        await this.payeeAccountNumber.fill(payeeData.accountNumber);
+        await this.verifyAccount.fill(payeeData.verifyAccount);
+        await this.amount.fill(payeeData.amount);
+        await this.fromAccountId.selectOption({ index: index });
     }
     async sendPayment(payeeData?: TestDataInterfaces.PayeeData) {
-        await test.step('Submit payment request', async () => {
-            if (payeeData) {
-                await this.fillBillPayForm(payeeData);
-            }
-            await this.sendPaymentButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        if (payeeData) {
+            await this.fillBillPayForm(payeeData);
         }
+        await this.sendPaymentButton.click();
+        await this.page.waitForLoadState('networkidle');
+    }
 
     //assertions
     async verifyBillPayPageIsOpened() {
-        
-        await test.step(`Assert that Bill Pay page is opened`, async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.BillPayPage));
-            await expect(this.billPayPagePageMessage).toBeVisible();
-        });
+
+        await expect(this.page).toHaveURL(new RegExp(URLs.BillPayPage));
+        await expect(this.billPayPagePageMessage).toBeVisible();
     }
 
-       async verifyBillPayPageIsNotOpened() {
-        await test.step(`Assert that Bill Pay page is Not opened`, async () => {
-            await expect(this.billPayPagePageMessage).not.toBeVisible();
-        });
+    async verifyBillPayPageIsNotOpened() {
+        await expect(this.billPayPagePageMessage).not.toBeVisible();
     }
     async verifyBillPaymentCompleteIsDisplayed() {
-        await test.step(`Assert that Bill Payment Complete message is displayed`, async () => {
-            await expect(this.billPaymentComplete).toBeVisible();
-        });
+        await expect(this.billPaymentComplete).toBeVisible();
     }
-    }
+}

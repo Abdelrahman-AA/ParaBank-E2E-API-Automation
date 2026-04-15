@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs } from '../../Data/0_DataIndex';
 
 export class FindTransactionsPage {
 
@@ -39,69 +39,51 @@ export class FindTransactionsPage {
 
     //methods
     async goToFindTransactionsPage() {
-        await test.step('Go to Find Transactions Page', async () => {
-            await this.page.goto(URLs.FindTransactionsPage);
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.page.goto(URLs.FindTransactionsPage);
+        await this.page.waitForLoadState('networkidle');
     }
     async findTransactionById(transactionId: string, accountIdIndex: number = 0) {
-        await test.step(`Find transaction by ID: ${transactionId}`, async () => {
-            await this.accountIdSelector.selectOption({ index: accountIdIndex });
-            await this.transactionId.fill(transactionId);
-            await this.findTransactionByIdButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.accountIdSelector.selectOption({ index: accountIdIndex });
+        await this.transactionId.fill(transactionId);
+        await this.findTransactionByIdButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     async findTransactionByDate(date: string, accountIdIndex: number = 0) {
-        await test.step(`Find transaction by date: ${date}`, async () => {
-            await this.accountIdSelector.selectOption({ index: accountIdIndex });
-            await this.transactionDate.fill(date);
-            await this.findTransactionByDateButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.accountIdSelector.selectOption({ index: accountIdIndex });
+        await this.transactionDate.fill(date);
+        await this.findTransactionByDateButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
     async findTransactionByDateRange(from: string, to: string, accountIdIndex: number = 0,) {
-        await test.step(`Find transaction by date range: from ${from} to ${to}`, async () => {
-            await this.accountIdSelector.selectOption({ index: accountIdIndex });
-            await this.fromDate.fill(from);
-            await this.toDate.fill(to);
-            await this.findTransactionByDateRangeButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.accountIdSelector.selectOption({ index: accountIdIndex });
+        await this.fromDate.fill(from);
+        await this.toDate.fill(to);
+        await this.findTransactionByDateRangeButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
     async findTransactionByAmount(amount: string, accountIdIndex: number = 0,) {
-        await test.step(`Find transaction by amount: ${amount}`, async () => {
-            await this.accountIdSelector.selectOption({ index: accountIdIndex });
-            await this.transactionAmount.fill(amount);
-            await this.findTransactionByAmountButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.accountIdSelector.selectOption({ index: accountIdIndex });
+        await this.transactionAmount.fill(amount);
+        await this.findTransactionByAmountButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyFindTransactionsPageIsOpened() {
-        await test.step('Assert that Find Transactions page is opened', async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.FindTransactionsPage));
-            await expect(this.findTransactionsMessage).toBeVisible();
-            await expect(this.accountIdSelector).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.FindTransactionsPage));
+        await expect(this.findTransactionsMessage).toBeVisible();
+        await expect(this.accountIdSelector).toBeVisible();
     }
 
-        async verifyFindTransactionsPageIsNotOpened() {
-        await test.step('Assert that Find Transactions page is Not opened', async () => {
-            await expect(this.findTransactionsMessage).not.toBeVisible();
-            await expect(this.accountIdSelector).not.toBeVisible();
-        });
+    async verifyFindTransactionsPageIsNotOpened() {
+        await expect(this.findTransactionsMessage).not.toBeVisible();
+        await expect(this.accountIdSelector).not.toBeVisible();
     }
     async verifyFoundTransactionIsSent() {
-        await test.step('Verify that found transaction is "Funds Transfer Sent"', async () => {
-            await expect(this.foundTransactionSent).toBeVisible();
-        });
+        await expect(this.foundTransactionSent).toBeVisible();
     }
     async verifyFoundTransactionIsReceived() {
-        await test.step('Verify that found transaction is "Funds Transfer Received"', async () => {
-            await expect(this.fundsTransferReceived).toBeVisible();
-        });
+        await expect(this.fundsTransferReceived).toBeVisible();
     }
 }

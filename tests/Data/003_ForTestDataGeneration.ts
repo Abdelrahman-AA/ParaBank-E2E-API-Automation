@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker';
 import { TestDataInterfaces } from './0_DataIndex';
 
-    let _firstName:string;
-    let _lastName:string;
-    let _addressStreet:string;
-    let _addressCity:string;
-    let _addressState:string;
-    let _addressZipCode:string;
-    let _ssn:string;
+let _firstName: string;
+let _lastName: string;
+let _addressStreet: string;
+let _addressCity: string;
+let _addressState: string;
+let _addressZipCode: string;
+let _ssn: string;
 
 
 const uniqueId = Date.now().toString().slice(-6);
@@ -40,7 +40,7 @@ export const getForgotLoginInfo = (user: TestDataInterfaces.RegistrationData): T
     ssn: user.ssn,
 });
 
-export const getPayeeInfo=(): TestDataInterfaces.PayeeData => ({
+export const getPayeeInfo = (): TestDataInterfaces.PayeeData => ({
     name: faker.person.firstName(),
     addressStreet: `${faker.number.int({ min: 10, max: 99 })}th Street`,
     addressCity: faker.location.city(),
@@ -49,10 +49,10 @@ export const getPayeeInfo=(): TestDataInterfaces.PayeeData => ({
     phoneNumber: faker.phone.number(),
     accountNumber: "00000",
     verifyAccount: "00000",
-    amount: '100.00'
+    amount: '100'
 });
 
-export const getUpdateProfileInfo=() : TestDataInterfaces.UpdateProfileData=> ({
+export const getUpdateProfileInfo = (): TestDataInterfaces.UpdateProfileData => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     address: `${faker.number.int({ min: 1, max: 99 })}th Street`,
@@ -62,9 +62,11 @@ export const getUpdateProfileInfo=() : TestDataInterfaces.UpdateProfileData=> ({
     phoneNumber: faker.phone.number()
 });
 
-export const getTransactionData=() : TestDataInterfaces.FinanceData => ({
+export const getTransactionData = (): TestDataInterfaces.FinanceData => ({
     amountToTransfer: '100.00',
     amountToBillPay: '100',
     loanAmount: '100',
-    downPayment: '50'
+    downPayment: '50',
+    depositAmount: '5000',
+    withdrawAmount: '1000'
 });

@@ -9,4 +9,11 @@ node_modules/
 /test-data.json
 /testData_AccountID.json
 /testData_TransactionID.json
+/test-results.json
+/JSESSIONID.json
+/UserID.json
+/AccountID.json
+/OriginalAccountBalance.json
+
+
 

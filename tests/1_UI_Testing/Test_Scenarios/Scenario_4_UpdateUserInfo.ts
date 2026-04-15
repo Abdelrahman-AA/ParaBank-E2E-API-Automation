@@ -1,4 +1,4 @@
-import { expect, test } from '../Fixtures/fixtures';
+import { expect, test } from '../../Fixtures/fixtures';
 
 export const scenario_4_UpdateUserInfo = () => {
 

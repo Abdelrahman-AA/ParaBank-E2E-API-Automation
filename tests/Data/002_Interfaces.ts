@@ -49,4 +49,6 @@ export interface FinanceData {
     amountToBillPay: string;
     loanAmount: string;
     downPayment: string;
+    depositAmount: string;
+    withdrawAmount: string;
 }

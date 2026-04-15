@@ -1,5 +1,5 @@
-import { test } from '../Fixtures/fixtures';
-import { TestData, TestDataGenerator } from '../Data/0_DataIndex';
+import { test } from '../../Fixtures/fixtures';
+import { TestData, TestDataGenerator } from '../../Data/0_DataIndex';
 import * as fs from 'fs';
 
 export const scenario_0_PrepareTestData = () => {

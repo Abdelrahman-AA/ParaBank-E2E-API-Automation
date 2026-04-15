@@ -75,9 +75,11 @@ jobs:
 
           **Summary:** We detected **${failCount > 0 ? failCount : 'multiple'}** failed test case(s) during the last run.
 
-          **Quick Access:**
-          - **Live Report (Screenshots & Traces):** [View Test Report](${pagesUrl})
-          - **GitHub Action Run:** [View Logs & Artifacts](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
+          **Quick Links:**
+          - **Latest Live Report:** [View Current Dashboard](${pagesUrl}) 
+            *(Note: This link always shows the results of the most recent run)*
+          - **Specific Run Context:** [View Logs & Artifacts for THIS Failure](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
+            *(Go here to download the exact trace/report for this specific issue)*
 
           **Next Steps:**
           1. Open the **Live Report** link above to investigate.

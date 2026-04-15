@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs } from '../../Data/0_DataIndex';
 
 export class TransferFundsPage {
 
@@ -25,47 +25,38 @@ export class TransferFundsPage {
 
     //methods
     async goToTransferFundsPage() {
-        await test.step(`Go to Transfer Funds page`, async () => {
-            await this.page.goto(URLs.TransferFundsPage);
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.page.goto(URLs.TransferFundsPage);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async makeTransfer(amount: string, fromAccountNumIndex: number, toAccountNumIndex: number) {
-        await test.step(`Make transfer of $${amount} from account Index ${fromAccountNumIndex} to account Index ${toAccountNumIndex}`, async () => {
-            await this.amount.fill(amount);
-            await this.fromAccountNum.selectOption({index : fromAccountNumIndex});
-            await this.toAccountNum.selectOption({index : toAccountNumIndex});
-            await this.transferButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.amount.fill(amount);
+        await this.fromAccountNum.selectOption({ index: fromAccountNumIndex });
+        await this.toAccountNum.selectOption({ index: toAccountNumIndex });
+        await this.transferButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyTransferFundsPageIsOpened() {
-        await test.step(`Assert that Transfer Funds page is opened`, async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.TransferFundsPage));
-            await expect(this.transferFundsPageMessage).toBeVisible();
-            await expect(this.amount).toBeVisible();
-            await expect(this.fromAccountNum).toBeVisible();
-            await expect(this.toAccountNum).toBeVisible();
-            await expect(this.transferButton).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.TransferFundsPage));
+        await expect(this.transferFundsPageMessage).toBeVisible();
+        await expect(this.amount).toBeVisible();
+        await expect(this.fromAccountNum).toBeVisible();
+        await expect(this.toAccountNum).toBeVisible();
+        await expect(this.transferButton).toBeVisible();
     }
 
-        async verifyTransferFundsPageIsNotOpened() {
-        await test.step(`Assert that Transfer Funds page is Not opened`, async () => {
-            await expect(this.transferFundsPageMessage).not.toBeVisible();
-            await expect(this.amount).not.toBeVisible();
-            await expect(this.fromAccountNum).not.toBeVisible();
-            await expect(this.toAccountNum).not.toBeVisible();
-            await expect(this.transferButton).not.toBeVisible();
-        });
+    async verifyTransferFundsPageIsNotOpened() {
+        await expect(this.transferFundsPageMessage).not.toBeVisible();
+        await expect(this.amount).not.toBeVisible();
+        await expect(this.fromAccountNum).not.toBeVisible();
+        await expect(this.toAccountNum).not.toBeVisible();
+        await expect(this.transferButton).not.toBeVisible();
     }
 
     async verifyTransferIsComplete() {
-        await test.step(`Assert that transfer is complete`, async () => {
-            await expect(this.transferDone).toBeVisible();
-            await expect(this.successfullyTransferMessage).toBeVisible();
-        });
-}}
+        await expect(this.transferDone).toBeVisible();
+        await expect(this.successfullyTransferMessage).toBeVisible();
+    }
+}

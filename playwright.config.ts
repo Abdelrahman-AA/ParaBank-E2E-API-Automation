@@ -24,7 +24,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'html',
 reporter: [
-  ['html', { outputFolder: 'playwright-report' }],
+  ['html', { outputFolder: 'playwright-report',open: 'never' }],
   ['json', { outputFile: 'test-results.json' }]
 ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -40,9 +40,18 @@ reporter: [
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'chromium',
+
+       {
+      name: 'Chromium-UI',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: /MainTest_Runer\.spec\.ts/,
+      grepInvert: /@api/,
+    },
+    
+    {
+      name: 'API-Services',
+      testMatch: /MainTest_Runer\.spec\.ts/,
+      grep: /@api/,
     },
 
     // {

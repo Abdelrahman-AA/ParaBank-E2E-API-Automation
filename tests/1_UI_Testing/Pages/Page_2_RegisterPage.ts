@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs, TestDataInterfaces } from '../../Data/0_DataIndex';
 
 export class RegisterPage {
 
@@ -41,64 +41,51 @@ export class RegisterPage {
 
     //methods
     async goToRegisterPage() {
-        await test.step('Go to Register Page', async () => {
-            await this.page.goto(URLs.RegisterPage);
-            await this.page.waitForLoadState('networkidle');
-        })
+        await this.page.goto(URLs.RegisterPage);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async fillRegistrationForm(registrationData: TestDataInterfaces.RegistrationData) {
-        await test.step('Fill the registration form', async () => {
-            await this.firstNameField.fill(registrationData.firstName);
-            await this.lastNameField.fill(registrationData.lastName);
-            await this.addressField.fill(registrationData.address);
-            await this.cityField.fill(registrationData.city);
-            await this.stateField.fill(registrationData.state);
-            await this.zipCodeField.fill(registrationData.zipCode);
-            await this.phoneNumberField.fill(registrationData.phoneNumber);
-            await this.ssnField.fill(registrationData.ssn);
-            await this.usernameField.fill(registrationData.username);
-            await this.passwordField.fill(registrationData.password);
-            await this.confirmPasswordField.fill(registrationData.passwordConfirmation);
-        });
+        await this.firstNameField.fill(registrationData.firstName);
+        await this.lastNameField.fill(registrationData.lastName);
+        await this.addressField.fill(registrationData.address);
+        await this.cityField.fill(registrationData.city);
+        await this.stateField.fill(registrationData.state);
+        await this.zipCodeField.fill(registrationData.zipCode);
+        await this.phoneNumberField.fill(registrationData.phoneNumber);
+        await this.ssnField.fill(registrationData.ssn);
+        await this.usernameField.fill(registrationData.username);
+        await this.passwordField.fill(registrationData.password);
+        await this.confirmPasswordField.fill(registrationData.passwordConfirmation);
     }
 
     async register(registrationData?: TestDataInterfaces.RegistrationData) {
-        await test.step('Submit Registration request', async () => {
-            if (registrationData) {
-                await this.fillRegistrationForm(registrationData);
-            }
-            await this.registerButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        if (registrationData) {
+            await this.fillRegistrationForm(registrationData);
+        }
+        await this.registerButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyRegisterPageIsOpened() {
-        await test.step('Assert that Register Page is opened', async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.RegisterPage));
-            await expect(this.registerPage_WelcomeMessage).toBeVisible();
-            await expect(this.firstNameField).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.RegisterPage));
+        await expect(this.registerPage_WelcomeMessage).toBeVisible();
+        await expect(this.firstNameField).toBeVisible();
     }
 
-        async verifyRegisterPageIsNotOpened() {
-        await test.step('Assert that Register Page is Not opened', async () => {
-            await expect.soft(this.registerPage_WelcomeMessage).not.toBeVisible(({ timeout: 500 }));
-            await expect.soft(this.firstNameField).not.toBeVisible(({ timeout: 500 }));
-        });
+    async verifyRegisterPageIsNotOpened() {
+        await expect.soft(this.registerPage_WelcomeMessage).not.toBeVisible(({ timeout: 500 }));
+        await expect.soft(this.firstNameField).not.toBeVisible(({ timeout: 500 }));
     }
 
-    async verifyRegistrationSuccessMessageIsDisplayed(username: string) :Promise<boolean>{
-       return await test.step('Assert that registration success message is displayed', async () => {
-            try {
+    async verifyRegistrationSuccessMessageIsDisplayed(username: string): Promise<boolean> {
+        try {
             await expect(this.registrationSuccessMessageWithUsername).toContainText(`Welcome ${username}`);
             await expect(this.registrationSuccessMessage).toHaveText('Your account was created successfully. You are now logged in.');
             return true;
-            } catch (error) {
-                return false;
-            }
-        });
+        } catch (error) {
+            return false;
+        }
     }
-
 }

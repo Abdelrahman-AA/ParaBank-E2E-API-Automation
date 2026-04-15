@@ -1,4 +1,4 @@
-import { test } from '../Fixtures/fixtures';
+import { test } from '../../Fixtures/fixtures';
 
 export const scenario_16_NavigatePagesFromSstaticToolBar = () => {
 

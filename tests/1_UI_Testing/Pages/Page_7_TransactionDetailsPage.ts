@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs } from '../../Data/0_DataIndex';
 
 export class TransactionDetailsPage {
 
@@ -17,29 +17,21 @@ export class TransactionDetailsPage {
 
     //methods
     async goToTransactionDetailsPage(transactionId: string) {
-        await test.step(`Go to Transaction Details page`, async () => {
-            await this.page.goto(URLs.TransactionDetailsPage +"?id="+ transactionId);
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.page.goto(URLs.TransactionDetailsPage + "?id=" + transactionId);
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyTransactionDetailsPageIsOpened() {
-        await test.step(`Assert that Transaction Details page is opened`, async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.TransactionDetailsPage + '.*'));
-            await expect(this.transactionDetailsPageMessage).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.TransactionDetailsPage + '.*'));
+        await expect(this.transactionDetailsPageMessage).toBeVisible();
     }
 
-        async verifyTransactionDetailsPageIsNotOpened() {
-        await test.step(`Assert that Transaction Details page is Not opened`, async () => {
-            await expect(this.transactionDetailsPageMessage).not.toBeVisible();
-        });
+    async verifyTransactionDetailsPageIsNotOpened() {
+        await expect(this.transactionDetailsPageMessage).not.toBeVisible();
     }
-    
+
     async verifyTransactionId(transactionId: string) {
-        await test.step(`Verify the right transaction ID page is opened for ${transactionId}`, async () => {
-            await expect(this.transactionId).toHaveText(transactionId);
-        });
+        await expect(this.transactionId).toHaveText(transactionId);
     }
 }

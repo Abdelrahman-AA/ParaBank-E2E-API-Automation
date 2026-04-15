@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs } from '../../Data/0_DataIndex';
 
 export class RequestLoanPage {
 
@@ -25,47 +25,35 @@ export class RequestLoanPage {
 
     //methods
     async goToRequestLoanPage() {
-        await test.step('Go to Request Loan Page', async () => {
-            await this.page.goto(URLs.RequestLoanPage);
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.page.goto(URLs.RequestLoanPage);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async applyForLoan(amount: string, downPayment: string, fromAccountIndex: number = 0) {
-        await test.step(`Apply for loan with amount $${amount}, down payment $${downPayment} from account index ${fromAccountIndex}`, async () => {
-            await this.loanAmount.fill(amount);
-            await this.downPayment.fill(downPayment);
-            await this.fromAccount.selectOption({ index: fromAccountIndex });
-            await this.applyNowButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.loanAmount.fill(amount);
+        await this.downPayment.fill(downPayment);
+        await this.fromAccount.selectOption({ index: fromAccountIndex });
+        await this.applyNowButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyRequestLoanPageIsOpened() {
-        await test.step('Assert that Request Loan page is opened', async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.RequestLoanPage));
-            await expect(this.applyForLoanPageMessage).toBeVisible();
-            await expect(this.fromAccount).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.RequestLoanPage));
+        await expect(this.applyForLoanPageMessage).toBeVisible();
+        await expect(this.fromAccount).toBeVisible();
     }
 
-        async verifyRequestLoanPageIsNotOpened() {
-        await test.step('Assert that Request Loan page is Not opened', async () => {
-            await expect(this.applyForLoanPageMessage).not.toBeVisible();
-            await expect(this.fromAccount).not.toBeVisible();
-        });
+    async verifyRequestLoanPageIsNotOpened() {
+        await expect(this.applyForLoanPageMessage).not.toBeVisible();
+        await expect(this.fromAccount).not.toBeVisible();
     }
 
     async verifyLoanRequestIsProcessed() {
-        await test.step('Assert that loan request is processed', async () => {
-            await expect(this.loanRequestProcessed).toBeVisible();
-        });
+        await expect(this.loanRequestProcessed).toBeVisible();
     }
 
     async verifyLoanIsApproved() {
-        await test.step('Assert that loan request is processed', async () => {
-            await expect(this.loanApproved).toBeVisible();
-        });
+        await expect(this.loanApproved).toBeVisible();
     }
 }

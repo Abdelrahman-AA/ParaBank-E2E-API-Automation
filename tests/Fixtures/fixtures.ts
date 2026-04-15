@@ -1,6 +1,8 @@
 import { test as base, expect } from '@playwright/test';
-import * as Pages from '../Pages/0_PagesIndex';
+import * as Pages from '../1_UI_Testing/Pages/0_PagesIndex';
 import { TestData } from '../Data/0_DataIndex';
+
+import * as services from '../2_APIs_Testing/Services/0_ServicesIndex';
 import * as fs from 'fs';
 
 type MyFixtures = {
@@ -19,6 +21,20 @@ type MyFixtures = {
     findTransactionsPage: Pages.FindTransactionsPage;
     updateProfilePage: Pages.UpdateProfilePage;
     requestLoanPage: Pages.RequestLoanPage;
+
+    service_0_Get_JSESSIONID: services.Service_0_Get_JSESSIONID;
+    service_1_RegisterNewUser: services.Service_1_RegisterNewUser;
+    service_2_LoginUser: services.Service_2_LoginUser;
+    service_3_UserByID: services.Service_3_UserByID;
+    service_4_UserUpdateInfo: services.Service_4_UserUpdateInfo;
+    service_3_CleanDB: services.Service_3_CleanDB;
+    service_5_UesrAccounts: services.Service_5_UesrAccounts;
+    service_6_BillPay: services.Service_6_BillPay;
+    service_7_AccountDeposit: services.Service_7_AccountDeposit;
+    service_8_AccountWithdraw: services.Service_8_AccountWithdraw;
+    service_9_CreateAccount: services.Service_9_CreateAccount;
+
+
 };
 
 type MyWorkerFixtures = {
@@ -77,6 +93,19 @@ export const test = base.extend<MyFixtures, MyWorkerFixtures>({
     updateProfilePage: async ({ page }, use) => { await use(new Pages.UpdateProfilePage(page)); },
     requestLoanPage: async ({ page }, use) => { await use(new Pages.RequestLoanPage(page)); },
     staticToolBarLinks: async ({ page }, use) => { await use(new Pages.staticToolBarLinks(page)); },
+
+
+    service_0_Get_JSESSIONID: async ({ request }, use) => { await use(new services.Service_0_Get_JSESSIONID(request)); },
+    service_1_RegisterNewUser: async ({ request }, use) => { await use(new services.Service_1_RegisterNewUser(request)); },
+    service_2_LoginUser: async ({ request }, use) => { await use(new services.Service_2_LoginUser(request)); },
+    service_3_UserByID: async ({ request }, use) => { await use(new services.Service_3_UserByID(request)); },
+    service_4_UserUpdateInfo: async ({ request }, use) => { await use(new services.Service_4_UserUpdateInfo(request)); },
+    service_3_CleanDB: async ({ request }, use) => { await use(new services.Service_3_CleanDB(request)); },
+    service_5_UesrAccounts: async ({ request }, use) => { await use(new services.Service_5_UesrAccounts(request)); },
+    service_6_BillPay: async ({ request }, use) => { await use(new services.Service_6_BillPay(request)); },
+    service_7_AccountDeposit: async ({ request }, use) => { await use(new services.Service_7_AccountDeposit(request)); },
+    service_8_AccountWithdraw: async ({ request }, use) => { await use(new services.Service_8_AccountWithdraw(request)); },
+    service_9_CreateAccount: async ({ request }, use) => { await use(new services.Service_9_CreateAccount(request)); },
 });
 
 export { expect } from '@playwright/test';

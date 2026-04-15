@@ -1,4 +1,4 @@
-import { test, expect } from '../Fixtures/fixtures';
+import { test, expect } from '../../Fixtures/fixtures';
 
 export const scenario_10_SearchTransactionsByTransactionDate = () => {
 

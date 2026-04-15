@@ -1,4 +1,4 @@
-import { test, expect } from '../Fixtures/fixtures';
+import { test, expect } from '../../Fixtures/fixtures';
 
 export const scenario_8_TransferAmount = () => {
 

@@ -1,5 +1,5 @@
-import { expect, Locator, Page, test } from '@playwright/test';
-import { URLs,TestDataInterfaces } from '../Data/0_DataIndex';
+import { expect, Locator, Page } from '@playwright/test';
+import { URLs, TestDataInterfaces } from '../../Data/0_DataIndex';
 
 export class ForgotLoginInfoPage {
 
@@ -33,58 +33,46 @@ export class ForgotLoginInfoPage {
 
     //methods
     async goToForgotLoginInfoPage() {
-        await test.step(`Go to Forgot Login Info Page`, async () => {
-            await this.page.goto(URLs.ForgotLoginInfoPage);
-            await this.page.waitForLoadState('networkidle');
-        });
+        await this.page.goto(URLs.ForgotLoginInfoPage);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async fillForgotLoginInfoForm(forgotLoginInfoData: TestDataInterfaces.ForgotLoginInfoData) {
-        await test.step(`Fill the Forgot Login Info form`, async () => {
-            await this.firstName.fill(forgotLoginInfoData.firstName);
-            await this.lastName.fill(forgotLoginInfoData.lastName);
-            await this.addressStreet.fill(forgotLoginInfoData.addressStreet);
-            await this.addressCity.fill(forgotLoginInfoData.addressCity);
-            await this.addressState.fill(forgotLoginInfoData.addressState);
-            await this.addressZipCode.fill(forgotLoginInfoData.addressZipCode);
-            await this.ssn.fill(forgotLoginInfoData.ssn);
-        });
+        await this.firstName.fill(forgotLoginInfoData.firstName);
+        await this.lastName.fill(forgotLoginInfoData.lastName);
+        await this.addressStreet.fill(forgotLoginInfoData.addressStreet);
+        await this.addressCity.fill(forgotLoginInfoData.addressCity);
+        await this.addressState.fill(forgotLoginInfoData.addressState);
+        await this.addressZipCode.fill(forgotLoginInfoData.addressZipCode);
+        await this.ssn.fill(forgotLoginInfoData.ssn);
     }
 
     async findMyLoginInfo(forgotLoginInfoData?: TestDataInterfaces.ForgotLoginInfoData) {
-        await test.step(`Submit Customer Lookup request`, async () => {
-            if (forgotLoginInfoData) {
-                await this.fillForgotLoginInfoForm(forgotLoginInfoData);
-            }
-            await this.findMyLoginInfoButton.click();
-            await this.page.waitForLoadState('networkidle');
-        });
+        if (forgotLoginInfoData) {
+            await this.fillForgotLoginInfoForm(forgotLoginInfoData);
+        }
+        await this.findMyLoginInfoButton.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     //assertions
     async verifyForgotLoginInfoPageIsOpened() {
-        await test.step(`Assert that Forgot Login Info Page is opened`, async () => {
-            await expect(this.page).toHaveURL(new RegExp(URLs.ForgotLoginInfoPage));
-            await expect(this.forgotLoginInfoPageMessage).toBeVisible();
-            await expect(this.forgotLoginInfoPageMessage).toHaveText('Customer Lookup');
-            await expect(this.firstName).toBeVisible();
-        });
+        await expect(this.page).toHaveURL(new RegExp(URLs.ForgotLoginInfoPage));
+        await expect(this.forgotLoginInfoPageMessage).toBeVisible();
+        await expect(this.forgotLoginInfoPageMessage).toHaveText('Customer Lookup');
+        await expect(this.firstName).toBeVisible();
     }
 
-        async verifyForgotLoginInfoPageIsNotOpened() {
-        await test.step(`Assert that Forgot Login Info Page is Not opened`, async () => {
-            await expect.soft(this.forgotLoginInfoPageMessage).not.toBeVisible(({ timeout: 500 }));
-            await expect.soft(this.forgotLoginInfoPageMessage).not.toHaveText('Customer Lookup',({ timeout: 500 }));
-            await expect.soft(this.firstName).not.toBeVisible(({ timeout: 500 }));
-        });
+    async verifyForgotLoginInfoPageIsNotOpened() {
+        await expect.soft(this.forgotLoginInfoPageMessage).not.toBeVisible(({ timeout: 500 }));
+        await expect.soft(this.forgotLoginInfoPageMessage).not.toHaveText('Customer Lookup', ({ timeout: 500 }));
+        await expect.soft(this.firstName).not.toBeVisible(({ timeout: 500 }));
     }
 
     async verifyRetrievedLoginInfoIsDisplayed(username: string, password: string) {
-        await test.step(`Assert that retrieved login info is displayed`, async () => {
-            await expect(this.retrievedUNamePasswordMessage).toBeVisible();
-            await expect(this.retrievedInfoParagraph).toBeVisible();
-            await expect(this.retrievedInfoParagraph).toContainText(`Username: ${username}`);
-            await expect(this.retrievedInfoParagraph).toContainText(`Password: ${password}`);
-        });
+        await expect(this.retrievedUNamePasswordMessage).toBeVisible();
+        await expect(this.retrievedInfoParagraph).toBeVisible();
+        await expect(this.retrievedInfoParagraph).toContainText(`Username: ${username}`);
+        await expect(this.retrievedInfoParagraph).toContainText(`Password: ${password}`);
     }
 }

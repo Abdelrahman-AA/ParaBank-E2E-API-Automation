@@ -1,4 +1,4 @@
-import { test } from '../Fixtures/fixtures';
+import { test } from '../../Fixtures/fixtures';
 
 export const scenario_7_BillPaymentProcess = () => {
     test.describe('Scenario 7: Bill Payment Process', () => {
