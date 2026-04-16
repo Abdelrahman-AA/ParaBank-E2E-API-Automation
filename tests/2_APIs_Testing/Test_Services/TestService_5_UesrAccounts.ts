@@ -1,6 +1,5 @@
 import { test } from '../../Fixtures/fixtures';
-import { Service_Base } from "../Services/01_Service_Base";
-
+import {TestService_Base} from './01_TestServices_Base'
 
 export const TestService_5_UesrAccounts = () => {
     test('Verify User Accounts', async ({ service_0_Get_JSESSIONID, service_2_LoginUser, service_5_UesrAccounts }) => {
@@ -9,11 +8,11 @@ export const TestService_5_UesrAccounts = () => {
         const { response, duration } = await service_5_UesrAccounts.getUserAccounts(userID, jSESSIONID);
 
         await test.step('Verify Status Code', async () => {
-            await Service_Base.virfyStatusCode(response);
+            await TestService_Base.virfyStatusCode(response);
         });
 
         await test.step('Verify Responding Time', async () => {
-            await Service_Base.verifyResponseTime(duration);
+            await TestService_Base.verifyResponseTime(duration);
         });
 
         await test.step('Verify API User Accounts Response', async () => {
@@ -21,7 +20,7 @@ export const TestService_5_UesrAccounts = () => {
         });
 
         await test.step('Verify Capture Account ID', async () => {
-            await service_5_UesrAccounts.captureAccountID(response);
+            await service_5_UesrAccounts.captureOrginalAccountID(response);
         })
 
         await test.step('Verify Capture Original Account Balance', async () => {

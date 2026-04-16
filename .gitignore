@@ -10,10 +10,8 @@ node_modules/
 /testData_AccountID.json
 /testData_TransactionID.json
 /test-results.json
-/JSESSIONID.json
-/UserID.json
-/AccountID.json
-/OriginalAccountBalance.json
+/API-RunningTestData.json
+/OrignalAccountTransactions.json
 
 
 

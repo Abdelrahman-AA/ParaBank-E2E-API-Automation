@@ -1,7 +1,7 @@
-import { APIsEndpoints, TestDataInterfaces } from "../../Data/0_DataIndex";
-import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import { APIsEndpoints } from "../../Data/0_DataIndex";
+import { APIRequestContext, expect } from '@playwright/test';
 
-export class Service_3_CleanDB {
+export class Service_18_CleanDB {
     private request: APIRequestContext;
 
     constructor(request: APIRequestContext) {

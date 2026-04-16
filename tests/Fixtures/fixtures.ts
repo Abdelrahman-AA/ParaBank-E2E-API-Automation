@@ -27,12 +27,21 @@ type MyFixtures = {
     service_2_LoginUser: services.Service_2_LoginUser;
     service_3_UserByID: services.Service_3_UserByID;
     service_4_UserUpdateInfo: services.Service_4_UserUpdateInfo;
-    service_3_CleanDB: services.Service_3_CleanDB;
     service_5_UesrAccounts: services.Service_5_UesrAccounts;
     service_6_BillPay: services.Service_6_BillPay;
     service_7_AccountDeposit: services.Service_7_AccountDeposit;
     service_8_AccountWithdraw: services.Service_8_AccountWithdraw;
     service_9_CreateAccount: services.Service_9_CreateAccount;
+    service_10_TransferFunds: services.Service_10_TransferFunds;
+    service_11_TransactionsForAccount: services.Service_11_TransactionsForAccount;
+    service_12_TransactionsForAccountWithAmount: services.Service_12_TransactionsForAccountWithAmount;
+    service_13_TransactionsWithMonthAndType: services.Service_13_TransactionsWithMonthAndType;
+    service_14_TransactionsFromDateToDate: services.Service_14_TransactionsFromDateToDate;
+    service_15_TransactionsOnDate: services.Service_15_TransactionsOnDate;
+    service_16_TransactionByTransactionID: services.Service_16_TransactionByTransactionID;
+    service_17_RequestLoan: services.Service_17_RequestLoan;
+    service_18_CleanDB: services.Service_18_CleanDB;
+    service_19_InitializeDB: services.Service_19_InitializeDB;
 
 
 };
@@ -100,12 +109,22 @@ export const test = base.extend<MyFixtures, MyWorkerFixtures>({
     service_2_LoginUser: async ({ request }, use) => { await use(new services.Service_2_LoginUser(request)); },
     service_3_UserByID: async ({ request }, use) => { await use(new services.Service_3_UserByID(request)); },
     service_4_UserUpdateInfo: async ({ request }, use) => { await use(new services.Service_4_UserUpdateInfo(request)); },
-    service_3_CleanDB: async ({ request }, use) => { await use(new services.Service_3_CleanDB(request)); },
     service_5_UesrAccounts: async ({ request }, use) => { await use(new services.Service_5_UesrAccounts(request)); },
     service_6_BillPay: async ({ request }, use) => { await use(new services.Service_6_BillPay(request)); },
     service_7_AccountDeposit: async ({ request }, use) => { await use(new services.Service_7_AccountDeposit(request)); },
     service_8_AccountWithdraw: async ({ request }, use) => { await use(new services.Service_8_AccountWithdraw(request)); },
     service_9_CreateAccount: async ({ request }, use) => { await use(new services.Service_9_CreateAccount(request)); },
+    service_10_TransferFunds: async ({ request }, use) => { await use(new services.Service_10_TransferFunds(request)); },
+    service_11_TransactionsForAccount: async ({ request }, use) => { await use(new services.Service_11_TransactionsForAccount(request)); },
+    service_12_TransactionsForAccountWithAmount: async ({ request }, use) => { await use(new services.Service_12_TransactionsForAccountWithAmount(request)); },
+    service_13_TransactionsWithMonthAndType: async ({ request }, use) => { await use(new services.Service_13_TransactionsWithMonthAndType(request)); },
+    service_14_TransactionsFromDateToDate: async ({ request }, use) => { await use(new services.Service_14_TransactionsFromDateToDate(request)); },
+    service_15_TransactionsOnDate: async ({ request }, use) => { await use(new services.Service_15_TransactionsOnDate(request)); },
+    service_16_TransactionByTransactionID: async ({ request }, use) => { await use(new services.Service_16_TransactionByTransactionID(request)); },
+    service_17_RequestLoan: async ({ request }, use) => { await use(new services.Service_17_RequestLoan(request)); },
+    service_18_CleanDB:async ({ request }, use) => { await use(new services.Service_18_CleanDB(request)); },
+    service_19_InitializeDB:async ({ request }, use) => { await use(new services.Service_19_InitializeDB(request)); },
+
 });
 
 export { expect } from '@playwright/test';

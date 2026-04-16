@@ -1,5 +1,6 @@
 import { APIsEndpoints, TestDataInterfaces } from "../../Data/0_DataIndex";
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import { Service_Base }from "./01_Service_Base";
 
 export class Service_6_BillPay {
     private request: APIRequestContext;
@@ -9,7 +10,7 @@ export class Service_6_BillPay {
     }
 
     //Methods
-    async postBillPay(accountID: string, payeeData: TestDataInterfaces.PayeeData, sessionID: string,) {
+    async postBillPay(accountID: string, payeeData: TestDataInterfaces.PayeeData, sessionID: string,expectedStatusCode:Number=200) {
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -29,6 +30,9 @@ export class Service_6_BillPay {
         const startTime = performance.now();
         const response = await this.request.post(APIsEndpoints.BillPay_Endpoint(accountID, payeeData.amount), { headers: headers, data: billPayload });
         const duration = performance.now() - startTime;
+        if (response.status() === expectedStatusCode) {
+            await Service_Base.addOrignalAccountTransactions(accountID, 'Debit', payeeData.amount, `Bill Payment to ${payeeData.name}`)
+        }
         return { response, duration };
     }
 
@@ -47,9 +51,9 @@ export class Service_6_BillPay {
         expect(String(body.accountId)).toBe(accountID);
     }
 
-    async verifyAccountBalanceAfterBillPay(response: APIResponse, OriginalBalance: string, billAmount: string) {
+    async verifyAccountBalanceAfterBillPay(response: APIResponse, beforelBalance: string, billAmount: string) {
         const accounts = await response.json();
         const accountBalance = accounts[0].balance;
-        expect(Number(accountBalance)).toBe(Number(OriginalBalance) - Number(billAmount));
+        expect(Number(accountBalance)).toBe(Number(beforelBalance) - Number(billAmount));
     }
 }

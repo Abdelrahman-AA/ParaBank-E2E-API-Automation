@@ -1,19 +1,22 @@
 import { test } from '../../Fixtures/fixtures';
-import { Service_Base } from "../Services/01_Service_Base";
+import { TestService_Base } from './01_TestServices_Base'
 
+let beforeBalance: string;
 
 export const TestService_8_AccountWithdraw = () => {
-    test('Verify Account Withdraw', async ({ service_0_Get_JSESSIONID, service_5_UesrAccounts, service_8_AccountWithdraw, testData }) => {
+    test('Verify Account Withdraw', async ({ service_0_Get_JSESSIONID,service_2_LoginUser, service_5_UesrAccounts, service_8_AccountWithdraw, testData }) => {
         const jSESSIONID = await service_0_Get_JSESSIONID.useJSESSIONID();
-        const accountID = await service_5_UesrAccounts.useAccountID();
+        const userID: string = await service_2_LoginUser.useUserID();
+        const accountID = await service_5_UesrAccounts.useOrginalAccountID();
+        beforeBalance = await service_5_UesrAccounts.getAccountBalance(userID, jSESSIONID);
         const { response, duration } = await service_8_AccountWithdraw.postAccountWithdraw(accountID, testData.financeData.withdrawAmount, jSESSIONID);
 
         await test.step('Verify Status Code', async () => {
-            await Service_Base.virfyStatusCode(response);
+            await TestService_Base.virfyStatusCode(response);
         });
 
         await test.step('Verify Responding Time', async () => {
-            await Service_Base.verifyResponseTime(duration);
+            await TestService_Base.verifyResponseTime(duration);
         });
 
         await test.step('Verify API Account Withdraw Response', async () => {
@@ -21,17 +24,17 @@ export const TestService_8_AccountWithdraw = () => {
         });
     });
 
-        test('Verify Account Balance After Withdraw', async ({ service_0_Get_JSESSIONID, service_2_LoginUser, service_5_UesrAccounts, service_8_AccountWithdraw, testData }) => {
+    test('Verify Account Balance After Withdraw', async ({ service_0_Get_JSESSIONID, service_2_LoginUser, service_5_UesrAccounts, service_8_AccountWithdraw, testData }) => {
         const jSESSIONID = await service_0_Get_JSESSIONID.useJSESSIONID();
         const userID: string = await service_2_LoginUser.useUserID();
         const { response, duration } = await service_5_UesrAccounts.getUserAccounts(userID, jSESSIONID);
 
         await test.step('Verify Status Code', async () => {
-            await Service_Base.virfyStatusCode(response);
+            await TestService_Base.virfyStatusCode(response);
         });
 
         await test.step('Verify Responding Time', async () => {
-            await Service_Base.verifyResponseTime(duration);
+            await TestService_Base.verifyResponseTime(duration);
         });
 
         await test.step('Verify API User Accounts Response', async () => {
@@ -39,8 +42,7 @@ export const TestService_8_AccountWithdraw = () => {
         });
 
         await test.step('Verify Account Balance After Bill Pay', async () => {
-            const OriginalBalance = await service_5_UesrAccounts.useOrginalAccountBalance();
-            await service_8_AccountWithdraw.verifyAccountBalanceAfterWithdraw(response, OriginalBalance, testData.payeeData.amount, testData.financeData.depositAmount, testData.financeData.withdrawAmount);
+            await service_8_AccountWithdraw.verifyAccountBalanceAfterWithdraw(response, beforeBalance, testData.financeData.withdrawAmount);
         })
     });
 }

@@ -1,5 +1,6 @@
 import { APIsEndpoints } from "../../Data/0_DataIndex";
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import { Service_Base } from "./01_Service_Base";
 
 export class Service_8_AccountWithdraw {
     private request: APIRequestContext;
@@ -9,7 +10,7 @@ export class Service_8_AccountWithdraw {
     }
 
     // Methods
-    async postAccountWithdraw(accountID: string, withdrawAmount: string, sessionID: string,) {
+    async postAccountWithdraw(accountID: string, withdrawAmount: string, sessionID: string,expectedStatusCode: Number = 200) {
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -18,6 +19,9 @@ export class Service_8_AccountWithdraw {
         const startTime = performance.now();
         const response = await this.request.post(APIsEndpoints.AccountWithdraw_Endpoint(accountID, withdrawAmount), { headers });
         const duration = performance.now() - startTime;
+                if (response.status() === expectedStatusCode) {
+                    await Service_Base.addOrignalAccountTransactions(accountID, 'Debit', withdrawAmount, 'Withdraw via Web Service')
+                }
         return { response, duration };
     }
 
@@ -27,9 +31,9 @@ export class Service_8_AccountWithdraw {
         expect(body).toBe(`Successfully withdrew $${withdrawAmount} from account #${accountID}`);
     }
 
-    async verifyAccountBalanceAfterWithdraw(response: APIResponse, OriginalBalance: string, billAmount: string, depositAmount: string, withdrawAmount: string) {
+    async verifyAccountBalanceAfterWithdraw(response: APIResponse, beforeBalance: string,withdrawAmount: string) {
         const accounts = await response.json();
         const accountBalance = accounts[0].balance;
-        expect(Number(accountBalance)).toBe(Number(OriginalBalance) - Number(billAmount) + Number(depositAmount)- Number(withdrawAmount));
+        expect(Number(accountBalance)).toBe(Number(beforeBalance) - Number(withdrawAmount));
     }
 }

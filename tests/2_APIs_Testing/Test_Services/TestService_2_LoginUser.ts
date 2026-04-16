@@ -1,6 +1,5 @@
 import { test } from '../../Fixtures/fixtures';
-import {Service_Base} from "../Services/01_Service_Base";
-
+import {TestService_Base} from './01_TestServices_Base'
 
 export const TestService_2_LoginUser = () => {
     test('Verify Login User',async ({ service_0_Get_JSESSIONID,service_2_LoginUser, testData }) => {
@@ -8,11 +7,11 @@ export const TestService_2_LoginUser = () => {
          const { response, duration } = await service_2_LoginUser.getLoginUser(testData.validUser.username, testData.validUser.password, jSESSIONID);
 
         await test.step('Verify Status Code', async () => {
-            await Service_Base.virfyStatusCode(response);
+            await TestService_Base.virfyStatusCode(response);
         });
 
         await test.step('Verify Responding Time', async () => {
-            await Service_Base.verifyResponseTime(duration);
+            await TestService_Base.verifyResponseTime(duration);
         });
 
         await test.step('Verify Capture User ID', async () => {

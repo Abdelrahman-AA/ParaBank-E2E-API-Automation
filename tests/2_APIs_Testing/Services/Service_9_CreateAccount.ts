@@ -1,5 +1,6 @@
 import { APIsEndpoints } from "../../Data/0_DataIndex";
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import { Service_Base } from "./01_Service_Base";
 
 export class Service_9_CreateAccount {
     private request: APIRequestContext;
@@ -9,7 +10,7 @@ export class Service_9_CreateAccount {
     }
 
     // Methods
-    async postCreateAccount(userID: string, accountID: string, accountType: number, sessionID: string) {
+    async postCreateAccount(userID: string, accountID: string, accountType: number, sessionID: string,expectedStatusCode: Number = 200) {
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -18,6 +19,9 @@ export class Service_9_CreateAccount {
         const startTime = performance.now();
         const response = await this.request.post(APIsEndpoints.CreateAccount_Endpoint(userID, accountType, accountID), { headers });
         const duration = performance.now() - startTime;
+        if (response.status() === expectedStatusCode) {
+            await Service_Base.addOrignalAccountTransactions(accountID, 'Debit', '100', 'Funds Transfer Sent')
+        }
         return { response, duration };
     }
 

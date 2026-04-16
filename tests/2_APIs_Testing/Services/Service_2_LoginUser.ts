@@ -5,7 +5,7 @@ import * as path from 'path';
 
 export class Service_2_LoginUser {
     private request: APIRequestContext;
-    private UserIDPath = path.join(process.cwd(), 'UserID.json');
+    private RunningDataPath = path.join(process.cwd(), 'API-RunningTestData.json');
 
     constructor(request: APIRequestContext) {
         this.request = request;
@@ -24,30 +24,37 @@ export class Service_2_LoginUser {
         return { response, duration };
     }
 
-    async captureUserID(response: APIResponse) {
-        const body = await response.text();
-        const userID = JSON.parse(body).id;
-        try {
-            const data = { userID };
-            fs.writeFileSync(this.UserIDPath, JSON.stringify(data, null, 2));
-            console.log("UserID stored successfully: " + userID);
-        } catch (err) {
-            console.error("Error storing UserID: " + err);
+async captureUserID(response: APIResponse) {
+    const body = await response.json();
+    const userID = body.id;
+    try {
+        let runningData = {};
+        if (fs.existsSync(this.RunningDataPath)) {
+            runningData = JSON.parse(fs.readFileSync(this.RunningDataPath, 'utf-8'));
         }
+        runningData = { ...runningData, userID: userID };
+        fs.writeFileSync(this.RunningDataPath, JSON.stringify(runningData, null, 2));
+        console.log("UserID stored successfully: " + userID);
+    } catch (err) {
+        console.error("Error storing UserID: " + err);
     }
+}
 
-    async useUserID() {
-        try {
-            if (fs.existsSync(this.UserIDPath)) {
-                const data = JSON.parse(fs.readFileSync(this.UserIDPath, 'utf-8'));
+async useUserID() {
+    try {
+        if (fs.existsSync(this.RunningDataPath)) {
+            const data = JSON.parse(fs.readFileSync(this.RunningDataPath, 'utf-8'));
+            if (data.userID) {
                 return String(data.userID);
             }
-            throw new Error("UserID file does not exist.");
-        } catch (err) {
-            console.error("Error reading UserID: " + err);
-            return "Error reading UserID";
+            throw new Error("UserID not found in the running data file.");
         }
+        throw new Error("Running data file does not exist.");
+    } catch (err) {
+        console.error("Error reading UserID: " + err);
+        return "Error reading UserID";
     }
+}
 
 // Verifications
     async verifyAPIResponseAgainstExpectedResponse(response: APIResponse, expectedData: TestDataInterfaces.RegistrationData) {

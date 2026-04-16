@@ -1,8 +1,8 @@
-import { test } from '../../Fixtures/fixtures';
-import { TestData, TestDataGenerator } from '../../Data/0_DataIndex';
+import { test } from '../Fixtures/fixtures';
+import { TestData, TestDataGenerator } from './0_DataIndex';
 import * as fs from 'fs';
 
-export const scenario_0_PrepareTestData = () => {
+export const PrepareTestData = () => {
     test.describe('Scenario 0: Prepare Test Data', () => {
         test('Setup: Initialize Test Data', async () => {
             const user = TestDataGenerator.getValidUser();
@@ -24,9 +24,5 @@ export const scenario_0_PrepareTestData = () => {
                 console.log('Scenario 0 Finished: Global Test Data Initialized for User');
             });
         });
-
-
     });
-
-
 }

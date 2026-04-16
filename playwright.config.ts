@@ -54,6 +54,12 @@ reporter: [
       grep: /@api/,
     },
 
+        {
+      name: 'finalizetests',
+      testMatch: /MainTest_Runer\.spec\.ts/,
+      grep: /@finalize/,
+    },
+
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },

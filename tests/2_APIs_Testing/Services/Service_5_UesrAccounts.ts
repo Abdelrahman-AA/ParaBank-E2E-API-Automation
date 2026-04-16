@@ -5,9 +5,7 @@ import * as path from 'path';
 
 export class Service_5_UesrAccounts {
     private request: APIRequestContext;
-    private accountIDPath = path.join(process.cwd(), 'AccountID.json');
-    private originalAccountBalancePath = path.join(process.cwd(), 'OriginalAccountBalance.json');
-
+    private RunningDataPath = path.join(process.cwd(), 'API-RunningTestData.json');
     constructor(request: APIRequestContext) {
         this.request = request;
     }
@@ -25,12 +23,28 @@ export class Service_5_UesrAccounts {
         return { response, duration };
     }
 
+    async getAccountBalance(userID: string, sessionID: string, accountOrder: number = 0) {
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            ...(sessionID ? { 'Cookie': `JSESSIONID=${sessionID}` } : {})
+        };
+        const response = await this.request.get(APIsEndpoints.UserAccounts_Endpoint(userID), { headers });
+        const accounts = await response.json();
+        return accounts[accountOrder].balance;
+    }
+
     async captureOrginalAccountBalance(response: APIResponse) {
         try {
             const accounts = await response.json();
             const accountBalance = accounts[0].balance;
-            const data = { accountBalance };
-            fs.writeFileSync(this.originalAccountBalancePath, JSON.stringify(data, null, 2));
+            let runningData = {};
+            if (fs.existsSync(this.RunningDataPath)) {
+                const fileContent = fs.readFileSync(this.RunningDataPath, 'utf-8');
+                runningData = JSON.parse(fileContent);
+            }
+            runningData = { ...runningData, accountBalance: accountBalance };
+            fs.writeFileSync(this.RunningDataPath, JSON.stringify(runningData, null, 2));
             console.log("Original Account Balance stored successfully: " + accountBalance);
         } catch (err) {
             console.error("Error storing Original Account Balance: " + err);
@@ -39,40 +53,64 @@ export class Service_5_UesrAccounts {
 
     async useOrginalAccountBalance() {
         try {
-            if (fs.existsSync(this.originalAccountBalancePath)) {
-                const data = JSON.parse(fs.readFileSync(this.originalAccountBalancePath, 'utf-8'));
-                return String(data.accountBalance);
+            if (fs.existsSync(this.RunningDataPath)) {
+                const data = JSON.parse(fs.readFileSync(this.RunningDataPath, 'utf-8'));
+                if (data.accountBalance !== undefined) {
+                    return String(data.accountBalance);
+                }
+                throw new Error("accountBalance not found in the running data file.");
             }
-            throw new Error(" Original Account Balance file does not exist.");
+            throw new Error("Running data file does not exist.");
         } catch (err) {
             console.error("Error reading Original Account Balance: " + err);
             return "Error reading Original Account Balance";
         }
     }
 
-        async captureAccountID(response: APIResponse) {
+    async captureOrginalAccountID(response: APIResponse) {
         try {
             const accounts = await response.json();
             const accountID = accounts[0].id;
-            const data = { accountID };
-            fs.writeFileSync(this.accountIDPath, JSON.stringify(data, null, 2));
+
+            let runningData = {};
+            if (fs.existsSync(this.RunningDataPath)) {
+                runningData = JSON.parse(fs.readFileSync(this.RunningDataPath, 'utf-8'));
+            }
+
+            runningData = { ...runningData, accountID: accountID };
+            fs.writeFileSync(this.RunningDataPath, JSON.stringify(runningData, null, 2));
+
             console.log("AccountID stored successfully: " + accountID);
         } catch (err) {
             console.error("Error storing AccountID: " + err);
         }
     }
 
-    async useAccountID() {
+    async useOrginalAccountID() {
         try {
-            if (fs.existsSync(this.accountIDPath)) {
-                const data = JSON.parse(fs.readFileSync(this.accountIDPath, 'utf-8'));
-                return String(data.accountID);
+            if (fs.existsSync(this.RunningDataPath)) {
+                const data = JSON.parse(fs.readFileSync(this.RunningDataPath, 'utf-8'));
+                if (data.accountID !== undefined) {
+                    return String(data.accountID);
+                }
+                throw new Error("accountID not found in the running data file.");
             }
-            throw new Error("AccountID file does not exist.");
+            throw new Error("Running data file does not exist.");
         } catch (err) {
             console.error("Error reading AccountID: " + err);
             return "Error reading AccountID";
         }
+    }
+
+    async getAccountIDbyOrder(userID: string, accounOrder: number, sessionID: string) {
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            ...(sessionID ? { 'Cookie': `JSESSIONID=${sessionID}` } : {})
+        };
+        const response = await this.request.get(APIsEndpoints.UserAccounts_Endpoint(userID), { headers });
+        const body = await response.json();
+        return String(body[accounOrder].id)
     }
 
     // Verifications

@@ -1,14 +1,11 @@
-import { request } from 'node:http';
 import { test } from '../Fixtures/fixtures';
-
+import { PrepareTestData } from '../../tests/Data/PrepareTestData';
 import * as runUiTest from '../1_UI_Testing/Test_Scenarios/0_ScenariosIndex';
-
 import * as runAPIsTest from '../2_APIs_Testing/Test_Services/0_Test_ServicesIndex';
-import { ru } from '@faker-js/faker';
+import { FinalizeTests } from '../../tests/FinalizeTests/FinalizeTests';
 
-
-test.describe('UI Testing (Execute all test scenarios sequentially)', () => {
-    runUiTest.scenario_0_PrepareTestData();
+test.describe('UI Testing (Execute all test scenarios sequentially) @ui', () => {
+    PrepareTestData();
     runUiTest.scenario_1_RegistrationFlow();
     runUiTest.scenario_2_LoginFlow();
     runUiTest.scenario_3_RetrieveLoginInfo();
@@ -27,10 +24,8 @@ test.describe('UI Testing (Execute all test scenarios sequentially)', () => {
     runUiTest.scenario_16_NavigatePagesFromSstaticToolBar();
 });
 
-
-
 test.describe('API Testing @api', () => {
-    // runAPIsTest.TestService_3_CleanDB();
+    PrepareTestData();
     runAPIsTest.TestService_0_Get_JSESSIONID();
     runAPIsTest.TestService_1_RegisterNewUser();
     runAPIsTest.TestService_2_LoginUser();
@@ -41,5 +36,18 @@ test.describe('API Testing @api', () => {
     runAPIsTest.TestService_7_AccountDeposit();
     runAPIsTest.TestService_8_AccountWithdraw();
     runAPIsTest.TestService_9_CreateAccount();
-    // runAPIsTest.TestService_3_CleanDB();
+    runAPIsTest.TestService_10_TransferFunds();
+    runAPIsTest.TestService_11_TransactionsForAccount();
+    runAPIsTest.TestService_12_TransactionsForAccountWithAmount();
+    runAPIsTest.TestService_13_TransactionsWithMonthAndType();
+    runAPIsTest.TestService_14_TransactionsFromDateToDate();
+    runAPIsTest.TestService_15_TransactionsOnDate();
+    runAPIsTest.TestService_16_TransactionByTransactionID();
+    runAPIsTest.TestService_17_RequestLoan();
+    runAPIsTest.TestService_18_CleanDB();
+    runAPIsTest.TestService_19_InitializeDB();
+});
+
+test.describe('Finalize Tests And Clean Running Test Files @finalize', () => {
+    FinalizeTests();
 });
